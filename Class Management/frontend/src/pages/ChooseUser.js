@@ -243,43 +243,46 @@ const ChooseUser = ({ visitor }) => {
 
   return (
     <StyledContainer>
-      <Container>
-        <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} sm={6} md={4}>
-            <StyledPaper onClick={() => navigateHandler("Admin")} elevation={6}>
-              <IconWrapper>
-                <AccountCircle fontSize="large" />
-              </IconWrapper>
-              <StyledTypography>
-                Admin
-              </StyledTypography>
-              Login as an administrator to access the dashboard to manage app data.
-            </StyledPaper>
+      <StyledHeader>Choose User..!</StyledHeader>
+      <ContentContainer>
+        <Container>
+          <Grid container spacing={4} justifyContent="center">
+            <Grid item xs={12} sm={6} md={4}>
+              <StyledPaper onClick={() => navigateHandler("Admin")} elevation={6}>
+                <IconWrapper>
+                  <AccountCircle fontSize="large" />
+                </IconWrapper>
+                <StyledTypography>
+                  Admin
+                </StyledTypography>
+                Login as an administrator to access the dashboard to manage app data,add attendance!!
+              </StyledPaper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <StyledPaper onClick={() => navigateHandler("Student")} elevation={6}>
+                <IconWrapper>
+                  <School fontSize="large" />
+                </IconWrapper>
+                <StyledTypography>
+                  Student
+                </StyledTypography>
+                Login as a student to explore course materials, assignments, and mark attendance.
+              </StyledPaper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <StyledPaper onClick={() => navigateHandler("Teacher")} elevation={6}>
+                <IconWrapper>
+                  <Group fontSize="large" />
+                </IconWrapper>
+                <StyledTypography>
+                  Teacher
+                </StyledTypography>
+                Login as a teacher to create courses, assignments, and track student progress.
+              </StyledPaper>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <StyledPaper onClick={() => navigateHandler("Student")} elevation={6}>
-              <IconWrapper>
-                <School fontSize="large" />
-              </IconWrapper>
-              <StyledTypography>
-                Student
-              </StyledTypography>
-              Login as a student to explore course materials and assignments.
-            </StyledPaper>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <StyledPaper onClick={() => navigateHandler("Teacher")} elevation={6}>
-              <IconWrapper>
-                <Group fontSize="large" />
-              </IconWrapper>
-              <StyledTypography>
-                Teacher
-              </StyledTypography>
-              Login as a teacher to create courses, assignments, and track student progress.
-            </StyledPaper>
-          </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </ContentContainer>
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loader}
@@ -297,13 +300,13 @@ export default ChooseUser;
 // Gradient animation for background
 const gradientAnimation = keyframes`
   0% {
-    background-position: 0% 50%;
+    background-color: rgb(0, 170, 255);
   }
   50% {
-    background-position: 100% 50%;
+    background-color: rgb(0, 77, 153);
   }
   100% {
-    background-position: 0% 50%;
+    background-color: rgb(0, 170, 255);
   }
 `;
 
@@ -319,63 +322,100 @@ const fadeInUp = keyframes`
   }
 `;
 
-// Hover effect with parallax
+// Hover effect with scale
 const hoverEffect = keyframes`
   0% {
     transform: scale(1);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
   100% {
     transform: scale(1.05);
-    box-shadow: 0 20px 30px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  }
+`;
+
+// Typing animation
+const typingAnimation = keyframes`
+  0% { width: 0; }
+  100% { width: 100%; }
+`;
+
+// Blinking animation
+const blinkingAnimation = keyframes`
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 `;
 
 const StyledContainer = styled.div`
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  background-size: 400% 400%;
+  background: rgb(0, 170, 255);
   animation: ${gradientAnimation} 10s ease infinite;
   height: 100vh;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const StyledHeader = styled.h1`
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  white-space: nowrap;
+  animation: ${typingAnimation} 4s steps(40, end) 1s forwards, ${blinkingAnimation} 1s step-start 4s infinite;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   padding: 2rem;
 `;
 
 const StyledPaper = styled(Paper)`
-  padding: 40px;
+  padding: 30px;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: rgb(51, 51, 51);
   cursor: pointer;
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
-  border-radius: 15px;
-  animation: ${fadeInUp} 1.5s ease-out;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border-radius: 20px;
+  animation: ${fadeInUp} 1.2s ease-out;
 
   &:hover {
-    animation: ${hoverEffect} 0.5s forwards ease-in-out;
-    background-color: rgba(255, 255, 255, 0.15);
+    animation: ${hoverEffect} 0.4s forwards ease-in-out;
+    background-color: rgba(255, 255, 255, 0.85);
   }
 `;
 
 const StyledTypography = styled.h2`
-  margin-bottom: 15px;
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: #fff;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: rgb(51, 51, 51);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 `;
 
 // Wrapper for the icon with subtle animation
 const IconWrapper = styled(Box)`
-  margin-bottom: 20px;
-  font-size: 2.5rem;
-  color: blue;
+  margin-bottom: 15px;
+  font-size: 2.2rem;
+  color: rgb(0, 170, 255);
   transition: transform 0.3s ease-in-out;
-  animation: ${fadeInUp} 1.7s ease-out;
+  animation: ${fadeInUp} 1.5s ease-out;
 
   &:hover {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 `;

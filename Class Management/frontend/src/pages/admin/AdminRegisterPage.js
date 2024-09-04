@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Box, Typography, Paper, Checkbox, FormControlLabel, TextField, CssBaseline, IconButton, InputAdornment, CircularProgress} from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import bgpic from "../../assets/designlogin.jpg"
+import bgpic from "../../assets/Admin.svg"
 import { LightPurpleButton } from '../../components/buttonStyles';
 import { registerUser } from '../../redux/userRelated/userHandle';
 import styled from 'styled-components';
@@ -116,11 +116,11 @@ const AdminRegisterPage = () => {
                                 required
                                 fullWidth
                                 id="schoolName"
-                                label="Create your school name"
+                                label="Create your Class name"
                                 name="schoolName"
                                 autoComplete="off"
                                 error={schoolNameError}
-                                helperText={schoolNameError && 'School name is required'}
+                                helperText={schoolNameError && 'Class name is required'}
                                 onChange={handleInputChange}
                             />
                             <TextField
