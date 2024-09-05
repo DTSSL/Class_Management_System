@@ -13,7 +13,7 @@ const Homepage = () => {
                 <source src={require('../assets/video1.mp4')} type="video/mp4" />
                 Your browser does not support the video tag.
             </BackgroundVideo>
-            <ContentWrapper>
+            <ContentWrapper> 
                 <Grid container spacing={0} alignItems="center" justifyContent="space-between">
                     <Grid item xs={12} md={6} container justifyContent="flex-start">
                         <FloatingImage

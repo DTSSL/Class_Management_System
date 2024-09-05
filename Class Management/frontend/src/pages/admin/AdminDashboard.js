@@ -62,6 +62,8 @@ const AdminDashboard = () => {
                             sx={{
                                 marginRight: '36px',
                                 ...(open && { display: 'none' }),
+                                borderRadius: '50%', // Circular styling
+                                padding: '8px', // Padding for circular button
                             }}
                         >
                             <MenuIcon />
@@ -80,7 +82,7 @@ const AdminDashboard = () => {
                 </AppBar>
                 <Drawer variant="permanent" open={open} sx={open ? styles.drawerStyled : styles.hideDrawer}>
                     <Toolbar sx={styles.toolBarStyled}>
-                        <IconButton onClick={toggleDrawer}>
+                        <IconButton onClick={toggleDrawer} sx={{ borderRadius: '50%', padding: '8px' }}>
                             <ChevronLeftIcon />
                         </IconButton>
                     </Toolbar>
@@ -142,7 +144,7 @@ const AdminDashboard = () => {
     );
 }
 
-export default AdminDashboard
+export default AdminDashboard;
 
 const styles = {
     boxStyled: {
