@@ -1,4 +1,3 @@
-
 import { AccountCircle, Group, School } from '@mui/icons-material';
 import {
   Backdrop,
@@ -76,6 +75,12 @@ const ChooseUser = ({ visitor }) => {
 
   return (
     <StyledContainer>
+      {/* Background Video */}
+      <VideoBackground autoPlay loop muted>
+        <source src={require('../assets/video.mp4')} type="video/mp4" />
+        Your browser does not support the video tag.
+      </VideoBackground>
+
       <StyledHeader>Choose User..!</StyledHeader>
       <ContentContainer>
         <Container>
@@ -88,7 +93,7 @@ const ChooseUser = ({ visitor }) => {
                 <StyledTypography>
                   Admin
                 </StyledTypography>
-                Login as an administrator to access the dashboard to manage app data,add attendance!!
+                Login as an administrator to access the dashboard to manage app data, add attendance!!
               </StyledPaper>
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
@@ -129,6 +134,18 @@ const ChooseUser = ({ visitor }) => {
 };
 
 export default ChooseUser;
+
+// Video Background Styling
+const VideoBackground = styled.video`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(50%); /* Adjust for darker background */
+`;
 
 // Gradient animation for background
 const gradientAnimation = keyframes`
@@ -184,13 +201,12 @@ const blinkingAnimation = keyframes`
 `;
 
 const StyledContainer = styled.div`
-  background: rgb(0, 170, 255);
-  animation: ${gradientAnimation} 10s ease infinite;
   height: 100vh;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 `;
 
 const StyledHeader = styled.h1`
