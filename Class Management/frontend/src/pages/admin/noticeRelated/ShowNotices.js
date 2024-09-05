@@ -135,6 +135,9 @@ const ShowNotices = () => {
         };
     }) || [];
 
+    // Sort notices by date in ascending order
+    noticeRows.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     const NoticeButtonHaver = ({ row }) => (
         <GlowingIconButton onClick={() => handleDelete(row.id, "Notice")}>
             <DeleteIcon />
@@ -186,6 +189,7 @@ const ShowNotices = () => {
                                             gutterBottom
                                             sx={{
                                                 fontWeight: index === noticeRows.length - 1 ? 'bold' : 'normal',
+                                                color: index === noticeRows.length - 1 ? 'inherit' : 'black', // Keep title color unchanged for non-new items
                                             }}
                                         >
                                             {row.title}
@@ -214,6 +218,7 @@ const ShowNotices = () => {
 };
 
 export default ShowNotices;
+
 
 
 
