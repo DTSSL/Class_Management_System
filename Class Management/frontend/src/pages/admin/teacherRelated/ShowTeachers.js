@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { getAllTeachers } from '../../../redux/teacherRelated/teacherHandle';
 import {
     Paper, Table, TableBody, TableContainer,
@@ -47,12 +47,17 @@ const ShowTeachers = () => {
     const deleteHandler = (deleteID, address) => {
         console.log(deleteID);
         console.log(address);
-        setMessage("Sorry the delete function has been disabled for now.")
-        setShowPopup(true)
-
-        // dispatch(deleteUser(deleteID, address)).then(() => {
-        //     dispatch(getAllTeachers(currentUser._id));
-        // });
+        // Show a confirmation popup or proceed with the deletion
+        if (window.confirm("Are you sure you want to delete this teacher?")) {
+            dispatch(deleteUser(deleteID, address)).then(() => {
+                dispatch(getAllTeachers(currentUser._id));
+            }).catch(error => {
+                console.error("Failed to delete teacher:", error);
+            });
+        } else {
+            setMessage("Deletion was canceled.");
+            setShowPopup(true);
+        }
     };
 
     const columns = [
@@ -166,4 +171,4 @@ const ShowTeachers = () => {
     );
 };
 
-export default ShowTeachers
+export default ShowTeachers;
