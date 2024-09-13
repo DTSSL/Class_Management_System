@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@mui/material'
+import { Container, Grid, Paper } from '@mui/material';
 import SeeNotice from '../../components/SeeNotice';
 import Students from "../../assets/img1.png";
 import Classes from "../../assets/img2.png";
@@ -18,9 +18,8 @@ const AdminHomePage = () => {
     const { sclassesList } = useSelector((state) => state.sclass);
     const { teachersList } = useSelector((state) => state.teacher);
 
-    const { currentUser } = useSelector(state => state.user)
-
-    const adminID = currentUser._id
+    const { currentUser } = useSelector(state => state.user);
+    const adminID = currentUser._id;
 
     useEffect(() => {
         dispatch(getAllStudents(adminID));
@@ -33,55 +32,45 @@ const AdminHomePage = () => {
     const numberOfTeachers = teachersList && teachersList.length;
 
     return (
-        <>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Students} alt="Students" />
-                            <Title>
-                                Total Students
-                            </Title>
-                            <Data start={0} end={numberOfStudents} duration={2.5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Classes} alt="Classes" />
-                            <Title>
-                                Total Classes
-                            </Title>
-                            <Data start={0} end={numberOfClasses} duration={5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Teachers} alt="Teachers" />
-                            <Title>
-                                Total Teachers
-                            </Title>
-                            <Data start={0} end={numberOfTeachers} duration={2.5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Fees} alt="Fees" />
-                            <Title>
-                                Fees Collection
-                            </Title>
-                            <Data start={0} end={23000} duration={2.5} prefix="Rs." />                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={12} lg={12}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <SeeNotice />
-                        </Paper>
-                    </Grid>
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={3} lg={3}>
+                    <StyledPaper>
+                        <StyledImage src={Students} alt="Students" />
+                        <Title>Total Students</Title>
+                        <Data start={0} end={numberOfStudents} duration={2.5} />
+                    </StyledPaper>
                 </Grid>
-            </Container>
-        </>
+                <Grid item xs={12} md={3} lg={3}>
+                    <StyledPaper>
+                        <StyledImage src={Classes} alt="Classes" />
+                        <Title>Total Classes</Title>
+                        <Data start={0} end={numberOfClasses} duration={5} />
+                    </StyledPaper>
+                </Grid>
+                <Grid item xs={12} md={3} lg={3}>
+                    <StyledPaper>
+                        <StyledImage src={Teachers} alt="Teachers" />
+                        <Title>Total Teachers</Title>
+                        <Data start={0} end={numberOfTeachers} duration={2.5} />
+                    </StyledPaper>
+                </Grid>
+                <Grid item xs={12} md={3} lg={3}>
+                    <StyledPaper>
+                        <StyledImage src={Fees} alt="Fees" />
+                        <Title>Fees Collection</Title>
+                        <Data start={0} end={23000} duration={2.5} prefix="Rs." />
+                    </StyledPaper>
+                </Grid>
+                <Grid item xs={12} md={12} lg={12}>
+                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                        <SeeNotice />
+                    </Paper>
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
-
 
 const StyledPaper = styled(Paper)`
   padding: 16px;
@@ -93,8 +82,15 @@ const StyledPaper = styled(Paper)`
   text-align: center;
 `;
 
+const StyledImage = styled.img`
+  width: 80px; /* Adjust size as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 16px; /* Space between image and title */
+`;
+
 const Title = styled.p`
   font-size: 1.25rem;
+  margin: 0;
 `;
 
 const Data = styled(CountUp)`
@@ -102,4 +98,4 @@ const Data = styled(CountUp)`
   color: green;
 `;
 
-export default AdminHomePage
+export default AdminHomePage;
