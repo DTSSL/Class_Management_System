@@ -63,9 +63,9 @@ const AdminHomePage = () => {
                     </StyledPaper>
                 </Grid>
                 <Grid item xs={12} md={12} lg={12}>
-                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                    <AnimatedNoticePaper>
                         <SeeNotice />
-                    </Paper>
+                    </AnimatedNoticePaper>
                 </Grid>
             </Grid>
         </Container>
@@ -77,25 +77,51 @@ const StyledPaper = styled(Paper)`
   display: flex;
   flex-direction: column;
   height: 200px;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #ffffff;
 `;
 
 const StyledImage = styled.img`
-  width: 80px; /* Adjust size as needed */
-  height: auto; /* Maintain aspect ratio */
-  margin-bottom: 16px; /* Space between image and title */
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 16px;
 `;
 
 const Title = styled.p`
   font-size: 1.25rem;
   margin: 0;
+  color: #333;
 `;
 
 const Data = styled(CountUp)`
   font-size: calc(1.3rem + .6vw);
-  color: green;
+  color: #28a745; /* Modern green color */
+`;
+
+const AnimatedNoticePaper = styled(Paper)`
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  animation: fadeIn 1s ease-in-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 export default AdminHomePage;
