@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getUserDetails } from '../../../redux/userRelated/userHandle';
 import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
 import { updateStudentFields } from '../../../redux/studentRelated/studentHandle';
+import { getUserDetails } from '../../../redux/userRelated/userHandle';
 
 import {
-    Box, InputLabel,
+    Box,
+    CircularProgress, FormControl,
+    InputLabel,
     MenuItem, Select,
-    Typography, Stack,
-    TextField, CircularProgress, FormControl
+    Stack,
+    TextField,
+    Typography
 } from '@mui/material';
 import { PurpleButton } from '../../../components/buttonStyles';
 import Popup from '../../../components/Popup';
@@ -195,3 +198,4 @@ const StudentAttendance = ({ situation }) => {
 }
 
 export default StudentAttendance
+

@@ -1,27 +1,28 @@
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import {
+    Box, IconButton,
+    Paper
+} from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import { BlackButton, BlueButton, GreenButton } from '../../../components/buttonStyles';
+import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
+import TableTemplate from '../../../components/TableTemplate';
 import { getAllStudents } from '../../../redux/studentRelated/studentHandle';
 import { deleteUser } from '../../../redux/userRelated/userHandle';
-import {
-    Paper, Box, IconButton
-} from '@mui/material';
-import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
-import { BlackButton, BlueButton, GreenButton } from '../../../components/buttonStyles';
-import TableTemplate from '../../../components/TableTemplate';
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
 
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import * as React from 'react';
 // import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
-import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
+import Popper from '@mui/material/Popper';
 import Popup from '../../../components/Popup';
 
 const ShowStudents = () => {
@@ -48,16 +49,20 @@ const ShowStudents = () => {
         setMessage("Sorry the delete function has been disabled for now.")
         setShowPopup(true)
 
-        // dispatch(deleteUser(deleteID, address))
-        //     .then(() => {
-        //         dispatch(getAllStudents(currentUser._id));
-        //     })
+        dispatch(deleteUser(deleteID, address))
+            .then(() => {
+                dispatch(getAllStudents(currentUser._id));
+            })
     }
 
     const studentColumns = [
         { id: 'name', label: 'Name', minWidth: 170 },
         { id: 'rollNum', label: 'Roll Number', minWidth: 100 },
-        { id: 'sclassName', label: 'Class', minWidth: 170 },
+        { id: 'sclassName', label: 'Class', minWidth: 120 },
+        { id: 'address', label: 'Address', minWidth: 170 },
+        { id: 'phoneNumber', label: 'Phone Number', minWidth: 120 },
+        { id: 'guardianName', label: 'Guardian', minWidth: 120 },
+        { id: 'guardianPhone', label: 'Guardian Number', minWidth: 120 },
     ]
 
     const studentRows = studentsList && studentsList.length > 0 && studentsList.map((student) => {
@@ -65,6 +70,10 @@ const ShowStudents = () => {
             name: student.name,
             rollNum: student.rollNum,
             sclassName: student.sclassName.sclassName,
+            address:student.address,
+            phoneNumber:student.phoneNumber,
+            guardianName:student.guardianName,
+            guardianPhone:student.guardianPhone,
             id: student._id,
         };
     })

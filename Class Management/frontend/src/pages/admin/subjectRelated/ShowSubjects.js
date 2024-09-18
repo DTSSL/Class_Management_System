@@ -1,17 +1,18 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import {
+    Box, IconButton,
+    Paper,
+} from '@mui/material';
+import { deleteUser } from '../../../redux/userRelated/userHandle';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
-import { deleteUser } from '../../../redux/userRelated/userHandle';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import {
-    Paper, Box, IconButton,
-} from '@mui/material';
-import DeleteIcon from "@mui/icons-material/Delete";
-import TableTemplate from '../../../components/TableTemplate';
 import { BlueButton, GreenButton } from '../../../components/buttonStyles';
-import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
 import Popup from '../../../components/Popup';
+import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
+import TableTemplate from '../../../components/TableTemplate';
+import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
 
 const ShowSubjects = () => {
     const navigate = useNavigate()
@@ -33,13 +34,13 @@ const ShowSubjects = () => {
     const deleteHandler = (deleteID, address) => {
         console.log(deleteID);
         console.log(address);
-        setMessage("Sorry the delete function has been disabled for now.")
-        setShowPopup(true)
+        // setMessage("Sorry the delete function has been disabled for now.")
+        // setShowPopup(true)
 
-        // dispatch(deleteUser(deleteID, address))
-        //     .then(() => {
-        //         dispatch(getSubjectList(currentUser._id, "AllSubjects"));
-        //     })
+        dispatch(deleteUser(deleteID, address))
+            .then(() => {
+                dispatch(getSubjectList(currentUser._id, "AllSubjects"));
+            })
     }
 
     const subjectColumns = [

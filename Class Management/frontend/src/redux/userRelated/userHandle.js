@@ -1,16 +1,15 @@
 import axios from 'axios';
 import {
-    authRequest,
-    stuffAdded,
-    authSuccess,
-    authFailed,
     authError,
+    authFailed,
     authLogout,
+    authRequest,
+    authSuccess,
     doneSuccess,
-    getDeleteSuccess,
-    getRequest,
-    getFailed,
     getError,
+    getFailed,
+    getRequest,
+    stuffAdded
 } from './userSlice';
 
 export const loginUser = (fields, role) => async (dispatch) => {

@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser, getUserDetails, updateUser } from '../../../redux/userRelated/userHandle';
-import { useNavigate, useParams } from 'react-router-dom'
-import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
-import { Box, Button, Collapse, IconButton, Table, TableBody, TableHead, Typography, Tab, Paper, BottomNavigation, BottomNavigationAction, Container } from '@mui/material';
+import { Delete as DeleteIcon, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { KeyboardArrowUp, KeyboardArrowDown, Delete as DeleteIcon } from '@mui/icons-material';
-import { removeStuff, updateStudentFields } from '../../../redux/studentRelated/studentHandle';
+import { BottomNavigation, BottomNavigationAction, Box, Button, Collapse, Container, IconButton, Paper, Tab, Table, TableBody, TableHead, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { calculateOverallAttendancePercentage, calculateSubjectAttendancePercentage, groupAttendanceBySubject } from '../../../components/attendanceCalculator';
-import CustomBarChart from '../../../components/CustomBarChart'
-import CustomPieChart from '../../../components/CustomPieChart'
+import CustomBarChart from '../../../components/CustomBarChart';
+import CustomPieChart from '../../../components/CustomPieChart';
 import { StyledTableCell, StyledTableRow } from '../../../components/styles';
+import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
+import { removeStuff, updateStudentFields } from '../../../redux/studentRelated/studentHandle';
+import { deleteUser, getUserDetails, updateUser } from '../../../redux/userRelated/userHandle';
 
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
@@ -105,10 +105,10 @@ const ViewStudent = () => {
         setMessage("Sorry the delete function has been disabled for now.")
         setShowPopup(true)
 
-        // dispatch(deleteUser(studentID, address))
-        //     .then(() => {
-        //         navigate(-1)
-        //     })
+        dispatch(deleteUser(studentID, address))
+            .then(() => {
+                navigate(-1)
+            })
     }
 
     const removeHandler = (id, deladdress) => {
@@ -339,6 +339,9 @@ const ViewStudent = () => {
         )
     }
 
+
+
+    //EDIT DETAILS
     const StudentDetailsSection = () => {
         return (
             <div>
@@ -358,7 +361,7 @@ const ViewStudent = () => {
                     Delete
                 </Button>
                 <br />
-                {/* <Button variant="contained" sx={styles.styledButton} className="show-tab" onClick={() => { setShowTab(!showTab) }}>
+                <Button variant="contained" sx={styles.styledButton} className="show-tab" onClick={() => { setShowTab(!showTab) }}>
                     {
                         showTab
                             ? <KeyboardArrowUp />
@@ -391,7 +394,7 @@ const ViewStudent = () => {
                             <button className="registerButton" type="submit" >Update</button>
                         </form>
                     </div>
-                </Collapse> */}
+                </Collapse>
             </div>
         )
     }
