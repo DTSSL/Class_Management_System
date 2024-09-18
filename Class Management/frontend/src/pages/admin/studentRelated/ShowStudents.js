@@ -66,8 +66,9 @@ const ShowStudents = () => {
     
 
     const studentColumns = [
-        { id: 'name', label: 'Name', minWidth: 170 },
         { id: 'rollNum', label: 'Roll Number', minWidth: 100 },
+        { id: 'name', label: 'Name', minWidth: 170 },
+        { id: 'dob', label: 'Birthday', minWidth: 120 },
         { id: 'sclassName', label: 'Class', minWidth: 120 },
         { id: 'address', label: 'Address', minWidth: 170 },
         { id: 'phoneNumber', label: 'Phone Number', minWidth: 120 },
@@ -79,6 +80,7 @@ const ShowStudents = () => {
         return {
             name: student.name,
             rollNum: student.rollNum,
+            dob: student.dob,
             sclassName: student.sclassName.sclassName,
             address:student.address,
             phoneNumber:student.phoneNumber,

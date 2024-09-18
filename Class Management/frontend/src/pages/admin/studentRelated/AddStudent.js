@@ -174,6 +174,7 @@ const AddStudent = ({ situation }) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [guardianName, setGuardianName] = useState('');
     const [guardianPhone, setGuardianPhone] = useState('');
+    const [dob, setDob] = useState('');
 
     const adminID = currentUser._id;
     const role = "Student";
@@ -219,6 +220,7 @@ const AddStudent = ({ situation }) => {
         phoneNumber,
         guardianName,
         guardianPhone,
+        dob,
     };
 
     const submitHandler = (event) => {
@@ -253,16 +255,7 @@ const AddStudent = ({ situation }) => {
                 <form className="registerForm" onSubmit={submitHandler}>
                     <span className="registerTitle">Add Student</span>
                     
-                    <label>Name</label>
-                    <input 
-                        className="registerInput" 
-                        type="text" 
-                        placeholder="Enter student's name..."
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
-                        autoComplete="name" 
-                        required 
-                    />
+                    
 
                     {
                         situation === "Student" &&
@@ -291,6 +284,25 @@ const AddStudent = ({ situation }) => {
                         placeholder="Enter student's Roll Number..."
                         value={rollNum}
                         onChange={(event) => setRollNum(event.target.value)}
+                        required 
+                    />
+                    <label>Name</label>
+                    <input 
+                        className="registerInput" 
+                        type="text" 
+                        placeholder="Enter student's name..."
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
+                        autoComplete="name" 
+                        required 
+                    />
+                    <label>Birthday</label>
+                    <input 
+                        className="registerInput" 
+                        type="date" 
+                        placeholder="Enter student's address..."
+                        value={dob}
+                        onChange={(event) => setDob(event.target.value)}
                         required 
                     />
 
