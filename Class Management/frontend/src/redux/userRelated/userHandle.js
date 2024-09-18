@@ -67,20 +67,7 @@ export const getUserDetails = (id, address) => async (dispatch) => {
     }
 }
 
-// export const deleteUser = (id, address) => async (dispatch) => {
-//     dispatch(getRequest());
 
-//     try {
-//         const result = await axios.delete(`${process.env.REACT_APP_BASE_URL}/${address}/${id}`);
-//         if (result.data.message) {
-//             dispatch(getFailed(result.data.message));
-//         } else {
-//             dispatch(getDeleteSuccess());
-//         }
-//     } catch (error) {
-//         dispatch(getError(error));
-//     }
-// }
 
 
 export const deleteUser = (id, address) => async (dispatch) => {
@@ -91,7 +78,7 @@ export const deleteUser = (id, address) => async (dispatch) => {
         if (result.data.message) {
             dispatch(getFailed(result.data.message));
         } else {
-            dispatch(doneSuccess(result.data)); // Assuming 'doneSuccess' handles successful deletions
+            dispatch(doneSuccess(result.data));
         }
     } catch (error) {
         dispatch(getError(error));

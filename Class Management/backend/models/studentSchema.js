@@ -137,6 +137,10 @@ const studentSchema = new mongoose.Schema({
     guardianPhone: {
         type: String,
         required: true
+    },
+    dob: {
+        type: Date,
+        required: true
     }
 });
 
