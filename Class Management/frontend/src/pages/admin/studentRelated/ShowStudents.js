@@ -46,14 +46,24 @@ const ShowStudents = () => {
     const deleteHandler = (deleteID, address) => {
         console.log(deleteID);
         console.log(address);
-        setMessage("Sorry the delete function has been disabled for now.")
-        setShowPopup(true)
-
+    
+        // Optionally, you can set a confirmation popup before deletion
+        const confirmDelete = window.confirm("Are you sure you want to delete this student?");
+        if (!confirmDelete) {
+            return; // Exit if deletion is canceled
+        }
+    
+        // Proceed with deleting the student
         dispatch(deleteUser(deleteID, address))
             .then(() => {
                 dispatch(getAllStudents(currentUser._id));
             })
-    }
+            .catch(err => {
+                setMessage("Failed to delete student. Please try again.");
+                setShowPopup(true);  // Show popup if there's an error during deletion
+            });
+    };
+    
 
     const studentColumns = [
         { id: 'name', label: 'Name', minWidth: 170 },
