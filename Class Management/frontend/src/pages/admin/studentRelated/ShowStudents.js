@@ -47,33 +47,33 @@ const ShowStudents = () => {
         console.log(deleteID);
         console.log(address);
     
-        // Optionally, you can set a confirmation popup before deletion
+        
         const confirmDelete = window.confirm("Are you sure you want to delete this student?");
         if (!confirmDelete) {
-            return; // Exit if deletion is canceled
+            return;
         }
     
-        // Proceed with deleting the student
+        
         dispatch(deleteUser(deleteID, address))
             .then(() => {
                 dispatch(getAllStudents(currentUser._id));
             })
             .catch(err => {
                 setMessage("Failed to delete student. Please try again.");
-                setShowPopup(true);  // Show popup if there's an error during deletion
+                setShowPopup(true);  
             });
     };
     
 
     const studentColumns = [
-        { id: 'rollNum', label: 'Roll Number', minWidth: 100 },
-        { id: 'name', label: 'Name', minWidth: 170 },
-        { id: 'dob', label: 'Birthday', minWidth: 120 },
-        { id: 'sclassName', label: 'Class', minWidth: 120 },
-        { id: 'address', label: 'Address', minWidth: 170 },
-        { id: 'phoneNumber', label: 'Phone Number', minWidth: 120 },
-        { id: 'guardianName', label: 'Guardian', minWidth: 120 },
-        { id: 'guardianPhone', label: 'Guardian Number', minWidth: 120 },
+        { id: 'rollNum', label: 'Roll Number', minWidth: 10 },
+        { id: 'name', label: 'Name', minWidth: 80 },
+        { id: 'dob', label: 'Birthday', minWidth: 50 },
+        { id: 'sclassName', label: 'Class', minWidth: 50 },
+        { id: 'address', label: 'Address', minWidth: 90 },
+        { id: 'phoneNumber', label: 'Phone Number', minWidth: 50 },
+        { id: 'guardianName', label: 'Guardian', minWidth: 50 },
+        { id: 'guardianPhone', label: 'Guardian Number', minWidth: 50 },
     ]
 
     const studentRows = studentsList && studentsList.length > 0 && studentsList.map((student) => {
@@ -239,7 +239,7 @@ const ShowStudents = () => {
                 </IconButton>
                 <BlueButton
                     variant="contained"
-                    size="small" // Set button size to small
+                    size="small" 
                     onClick={() => navigate("/Admin/students/student/" + row.id)}
                 >
                     View
@@ -248,7 +248,7 @@ const ShowStudents = () => {
                     <ButtonGroup variant="contained" size="small" ref={anchorRef} aria-label="split button">
                         <Button onClick={handleClick}>{options[selectedIndex]}</Button>
                         <BlackButton
-                            size="small" // Set button size to small
+                            size="small" 
                             aria-controls={open ? 'split-button-menu' : undefined}
                             aria-expanded={open ? 'true' : undefined}
                             aria-label="select merge strategy"
