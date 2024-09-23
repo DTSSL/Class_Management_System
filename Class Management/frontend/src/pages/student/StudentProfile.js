@@ -1,7 +1,7 @@
-// import React from 'react'
-// import styled from 'styled-components';
-// import { Card, CardContent, Typography, Grid, Box, Avatar, Container, Paper } from '@mui/material';
+// import { Avatar, Box, Card, CardContent, Container, Grid, Paper, Typography } from '@mui/material';
+// import React from 'react';
 // import { useSelector } from 'react-redux';
+// import styled from 'styled-components';
 
 // const StudentProfile = () => {
 //   const { currentUser, response, error } = useSelector((state) => state.user);
@@ -108,10 +108,11 @@
 
 
 
+
+
 import { Avatar, Box, Card, Container, Grid, Paper, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
 
 const StudentProfile = () => {
   const { currentUser, response, error } = useSelector((state) => state.user);
@@ -129,7 +130,6 @@ const StudentProfile = () => {
     address: currentUser.address,
     emergencyContact: ""
   });
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -142,14 +142,13 @@ const StudentProfile = () => {
 
   const saveChanges = () => {
     console.log('Updated User Data:', userData);
-    // You can implement the save logic here (e.g., sending data to the server)
     setEditMode(false);
   };
 
   return (
     <>
       <Container maxWidth="md">
-        <StyledPaper elevation={3}>
+        <Paper elevation={3}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center">
@@ -167,195 +166,57 @@ const StudentProfile = () => {
             </Grid>
             <Grid item xs={12}>
               <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p" textAlign="center">
+                <Typography variant="subtitle1" component="p">
                   Student Roll No: {currentUser.rollNum}
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs={12}>
               <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p" textAlign="center">
+                <Typography variant="subtitle1" component="p">
                   Class: {userData.sclassName}
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs={12}>
               <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p" textAlign="center">
+                <Typography variant="subtitle1" component="p">
                   School: {userData.schoolName}
-                </Typography>
-                
-              </Box>
-              </Grid>
-              <Grid item xs={12}>
-              <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p" textAlign="center">
-                  Home Address: {currentUser.address}
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs={12}>
               <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p" textAlign="center">
+                <Typography variant="subtitle1" component="p">
+                  Home Address: {currentUser.address}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12}> 
+              <Box display="flex" justifyContent="left">
+                <Typography variant="subtitle1" component="p">
                   Phone Number: {currentUser.phoneNumber}
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={12} >
-            <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p" textAlign="center">
+            <Grid item xs={12}>
+              <Box display="flex" justifyContent="left">
+                <Typography variant="subtitle1" component="p">
                   Guardian: {currentUser.guardianName}
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={12} >
-            <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p" textAlign="center">
+            <Grid item xs={12}>
+              <Box display="flex" justifyContent="left">
+                <Typography variant="subtitle1" component="p">
                   Emergency Number: {currentUser.guardianPhone}
                 </Typography>
               </Box>
             </Grid>
           </Grid>
-
-          
-        </StyledPaper>
+        </Paper>
         <Card>
-          {/* <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Personal Information
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle1" component="p">
-                  <strong>Date of Birth:</strong>
-                  {editMode ? (
-                    <TextField
-                      fullWidth
-                      name="dob"
-                      id="dob"
-                      type='date'
-                      value={userData.dob}
-                      onChange={handleInputChange}
-                      variant="outlined"
-                      size="small"
-                      required
-                    />
-                  ) : (
-                    userData.dob
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle1" component="p">
-                  <strong>Gender:</strong>
-                  {editMode ? (
-                    <TextField
-                      fullWidth
-                      name="gender"
-                      required id='gender'
-                      type='gender'
-                      value={userData.gender}
-                      onChange={handleInputChange}
-                      variant="outlined"
-                      size="small"
-                      
-                    />
-                  ) : (
-                    userData.gender
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle1" component="p">
-                  <strong>Email:</strong>
-                  {editMode ? (
-                    <TextField
-                      fullWidth
-                      name="email"
-                      placeholder='Enter Email Address'
-                      type='email'
-                      value={userData.email}
-                      onChange={handleInputChange}
-                      variant="outlined"
-                      size="small"
-                    />
-                  ) : (
-                    userData.email
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle1" component="p">
-                  <strong>Phone:</strong>
-                  {editMode ? (
-                    <TextField
-                      fullWidth
-                      name="phone"
-                      placeholder='Enter Phone Number'
-                      value={userData.phone}
-                      onChange={handleInputChange}
-                      variant="outlined"
-                      size="small"
-                    />
-                  ) : (
-                    userData.phone
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle1" component="p">
-                  <strong>Address:</strong>
-                  {editMode ? (
-                    <TextField
-                      fullWidth
-                      name="address"
-                      placeholder='Enter Home Address'
-                      value={userData.address}
-                      onChange={handleInputChange}
-                      variant="outlined"
-                      size="small"
-                    />
-                  ) : (
-                    userData.address
-                  )}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle1" component="p">
-                  <strong>Emergency Contact:</strong>
-                  {editMode ? (
-                    <TextField
-                      fullWidth
-                      name="emergencyContact"
-                      placeholder='Enter Number'
-                      value={userData.emergencyContact}
-                      onChange={handleInputChange}
-                      variant="outlined"
-                      size="small"
-                    />
-                  ) : (
-                    userData.emergencyContact
-                  )}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Box mt={2} display="flex" justifyContent="flex-end">
-              {editMode ? (
-                <>
-                  <Button variant="contained" color="primary" onClick={saveChanges}>
-                    Save
-                  </Button>
-                  <Button variant="outlined" color="secondary" onClick={toggleEditMode} sx={{ ml: 2 }}>
-                    Cancel
-                  </Button>
-                </>
-              ) : (
-                <Button variant="contained" color="primary" onClick={toggleEditMode}>
-                  Edit
-                </Button>
-              )}
-            </Box>
-          </CardContent> */}
+          {/* Add more details and personal information here */}
         </Card>
       </Container>
     </>
@@ -364,9 +225,12 @@ const StudentProfile = () => {
 
 export default StudentProfile;
 
-const StyledPaper = styled(Paper)`
-  padding: 20px;
-  margin-bottom: 20px;
-  width: 90%;
-  
-`;
+
+
+
+
+
+
+
+
+
