@@ -110,32 +110,23 @@
 
 
 
-import { Avatar, Box, Card, Container, Grid, Paper, Typography } from '@mui/material';
+import { Avatar, Box, Container, Fade, Grid, Paper, Slide, Typography } from '@mui/material';
 import { QRCodeCanvas } from 'qrcode.react';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const StudentProfile = () => {
-  const { currentUser, response, error } = useSelector((state) => state.user);
-
+  const { currentUser } = useSelector((state) => state.user);
   const [editMode, setEditMode] = useState(false);
   const [userData, setUserData] = useState({
     name: currentUser.name,
     rollNum: currentUser.rollNum,
     sclassName: currentUser.sclassName.sclassName,
     schoolName: currentUser.school.schoolName,
-    dob: currentUser.dob,
-    gender: "",
-    email: "",
     phone: currentUser.phoneNumber,
     address: currentUser.address,
-    emergencyContact: ""
+    emergencyContact: currentUser.guardianPhone,
   });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -147,92 +138,89 @@ const StudentProfile = () => {
   };
 
   return (
-    <>
-      <Container maxWidth="md">
-        <Paper elevation={3}>
+    <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Slide in={true} direction="up" timeout={600}>
+        <Paper elevation={10} sx={{ p: 3, borderRadius: 4 }}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="center">
-                <Avatar alt="Student Avatar" sx={{ width: 150, height: 150 }}>
+
+            <Grid item xs={12} textAlign="center">
+            <Box display="flex" justifyContent="center"> 
+              <Fade in={true} timeout={1000}>
+                <Avatar
+                  alt="Student Avatar"
+                  sx={{
+                    width: 150,
+                    height: 150,
+                    boxShadow: '0px 4px 10px rgba(0,0,0,0.2)',
+                    transition: 'transform 0.3s ease',
+                    '&:hover': { transform: 'scale(1.1)' },
+                  }}
+                >
                   {String(currentUser.name).charAt(0)}
                 </Avatar>
+              </Fade>
               </Box>
             </Grid>
+
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center">
-                <Typography variant="h5" component="h2" textAlign="center">
+                <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
                   {currentUser.name}
                 </Typography>
+                {/* <IconButton onClick={toggleEditMode}>
+                  {editMode ? <SaveIcon color="primary" /> : <EditIcon color="primary" />}
+                </IconButton> */}
               </Box>
             </Grid>
 
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="center" mt={2}>
+            {/* QR Generator */}
+            <Grid item xs={12} textAlign="center">
+              <Fade in={true} timeout={1200}>
                 <QRCodeCanvas value={currentUser._id} size={150} />
+              </Fade>
+            </Grid>
+
+            {/* Profile Details */}
+            <Grid item xs={12}>
+              <Box display="flex" flexDirection="column" gap={2}>
+
+                <Typography variant="subtitle1">
+                  <strong>Student Roll No:</strong> {userData.rollNum}
+                </Typography>
+
+                <Typography variant="subtitle1">
+                  <strong>Class:</strong> {userData.sclassName}
+                </Typography>
+
+                <Typography variant="subtitle1">
+                  <strong>School:</strong> {userData.schoolName}
+                </Typography>
+
+                <Typography variant="subtitle1">
+                  <strong>Home Address:</strong> {userData.address}
+                </Typography>
+
+                <Typography variant="subtitle1">
+                  <strong>Phone Number:</strong> {userData.phone}
+                </Typography>
+
+                <Typography variant="subtitle1">
+                  <strong>Emergency Number:</strong> {userData.emergencyContact}
+                </Typography>
               </Box>
             </Grid>
 
-
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p">
-                  Student Roll No: {currentUser.rollNum}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p">
-                  Class: {userData.sclassName}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p">
-                  School: {userData.schoolName}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p">
-                  Home Address: {currentUser.address}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p">
-                  Phone Number: {currentUser.phoneNumber}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p">
-                  Guardian: {currentUser.guardianName}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="left">
-                <Typography variant="subtitle1" component="p">
-                  Emergency Number: {currentUser.guardianPhone}
-                </Typography>
-              </Box>
-            </Grid>
           </Grid>
         </Paper>
-        <Card>
-          {/* Add more details and personal information here */}
-        </Card>
-      </Container>
-    </>
+      </Slide>
+
+     
+    </Container>
   );
 };
 
 export default StudentProfile;
+
 
 
 
