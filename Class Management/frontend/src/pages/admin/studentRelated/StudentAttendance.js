@@ -364,7 +364,7 @@
 
 
 
-import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Fade, FormControl, InputLabel, MenuItem, Select, TextField, Typography, Zoom } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { QrReader } from 'react-qr-reader';
 import { useDispatch, useSelector } from 'react-redux';
@@ -379,16 +379,15 @@ const AdminAttendance = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [subjectName, setSubjectName] = useState('');
   const [chosenSubName, setChosenSubName] = useState('');
-  const [date, setDate] = useState(''); // Date state for manual selection
+  const [date, setDate] = useState(''); 
 
   useEffect(() => {
-    // Fetch the subjects list based on class or identifier
     dispatch(getSubjectList("classOrRelevantIdentifier", "ClassSubjects"));
   }, [dispatch]);
 
   const handleScan = (data) => {
     if (data) {
-      setScanResult(data); // Capture student ID from the QR code
+      setScanResult(data); 
       setErrorMessage('');
       setLoading(false);
     }
@@ -396,7 +395,6 @@ const AdminAttendance = () => {
 
   const handleError = (err) => {
     setLoading(false);
-    setErrorMessage('Error scanning QR code. Please try again.');
     console.error(err);
   };
 
@@ -404,8 +402,8 @@ const AdminAttendance = () => {
     if (scanResult && chosenSubName && date) {
       const fields = {
         status: 'Present',
-        date, // Use the manually selected date
-        subName: chosenSubName, // Selected subject name
+        date, 
+        subName: chosenSubName, 
       };
       dispatch(updateStudentFields(scanResult, fields, 'StudentAttendance'));
       setErrorMessage('');
@@ -426,7 +424,7 @@ const AdminAttendance = () => {
   return (
     <Box p={3} textAlign="center">
       <Typography variant="h4" gutterBottom>
-        Select Subject, Date, and Scan QR Code for Attendance
+        Scan QR Code for Attendance
       </Typography>
 
       <FormControl fullWidth sx={{ mb: 3 }}>
@@ -476,22 +474,30 @@ const AdminAttendance = () => {
         mb={2}
         width={{ xs: '90%', sm: '60%', md: '40%' }}
         mx="auto"
+        sx={{
+          transition: 'border-color 0.3s ease-in-out',
+          '&:hover': {
+            borderColor: '#1a73e8',
+          },
+        }}
       >
         {/* QR Scanner */}
         {loading && (
-          <Box mb={2}>
-            <CircularProgress color="primary" />
-            <Typography variant="body1" color="textSecondary">
-              Scanning...
-            </Typography>
-          </Box>
+          <Fade in={loading} timeout={500}>
+            <Box mb={2}>
+              <CircularProgress color="primary" />
+              <Typography variant="body1" color="textSecondary">
+                Scanning...
+              </Typography>
+            </Box>
+          </Fade>
         )}
 
         {/* QR Reader Component */}
         <QrReader
           onResult={(result, error) => {
             if (!!result) {
-              handleScan(result?.text); // Handle scan result
+              handleScan(result?.text); 
             }
             if (!!error) {
               handleError(error);
@@ -505,25 +511,30 @@ const AdminAttendance = () => {
       </Box>
 
       {scanResult && (
-        <>
-          <Typography variant="h6" color="green" gutterBottom>
-            Student ID: {scanResult}
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddAttendance}
-            sx={{ mt: 2 }}
-          >
-            Add Attendance
-          </Button>
-        </>
+        <Zoom in={!!scanResult} timeout={500}>
+          <Box>
+            <Typography variant="h6" color="green" gutterBottom>
+              Student ID: {scanResult}
+            </Typography>
+            
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddAttendance}
+              sx={{ mt: 2 }}
+            >
+              Add Attendance
+            </Button>
+          </Box>
+        </Zoom>
       )}
 
       {errorMessage && (
-        <Typography variant="body1" color="error">
-          {errorMessage}
-        </Typography>
+        <Fade in={!!errorMessage} timeout={300}>
+          <Typography variant="body1" color="error">
+            {errorMessage}
+          </Typography>
+        </Fade>
       )}
     </Box>
   );
