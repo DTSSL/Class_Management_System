@@ -302,21 +302,30 @@
 
 
 
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { QrReader } from 'react-qr-reader';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
 import { updateStudentFields } from '../../../redux/studentRelated/studentHandle';
 
-const AdminAttendance = () => {
+const AdminAttendance = ({ studentID }) => {
   const dispatch = useDispatch();
+  const { subjectsList } = useSelector((state) => state.sclass);
   const [scanResult, setScanResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [subjectName, setSubjectName] = useState('');
+  const [chosenSubName, setChosenSubName] = useState('');
+
+  useEffect(() => {
+    // Assuming the class or some identifier is available to fetch subjects
+    dispatch(getSubjectList("classOrRelevantIdentifier", "ClassSubjects"));
+  }, [dispatch]);
 
   const handleScan = (data) => {
     if (data) {
-      setScanResult(data); 
+      setScanResult(data); // Capture the student ID from the QR code
       setErrorMessage('');
       setLoading(false);
     }
@@ -329,23 +338,56 @@ const AdminAttendance = () => {
   };
 
   const handleAddAttendance = () => {
-    if (scanResult) {
+    if (scanResult && chosenSubName) {
       const fields = {
         status: 'Present',
         date: new Date().toISOString().split('T')[0],
-        subName: '66ea5e81b24be989d9a79591', 
+        subName: chosenSubName, // Subject chosen manually
       };
       dispatch(updateStudentFields(scanResult, fields, 'StudentAttendance'));
       setErrorMessage('');
-      setScanResult(null); 
+      setScanResult(null);
+    } else {
+      setErrorMessage('Please select a subject before scanning the QR code.');
     }
+  };
+
+  const handleSubjectChange = (event) => {
+    const selectedSubject = subjectsList.find(
+      (subject) => subject.subName === event.target.value
+    );
+    setSubjectName(selectedSubject.subName);
+    setChosenSubName(selectedSubject._id);
   };
 
   return (
     <Box p={3} textAlign="center">
       <Typography variant="h4" gutterBottom>
-        Scan QR Code for Attendance
+        Select Subject and Scan QR Code for Attendance
       </Typography>
+
+      <FormControl fullWidth sx={{ mb: 3 }}>
+        <InputLabel id="subject-select-label">Select Subject</InputLabel>
+        <Select
+          labelId="subject-select-label"
+          id="subject-select"
+          value={subjectName}
+          label="Choose an option"
+          onChange={handleSubjectChange}
+          required
+        >
+          {subjectsList ? (
+            subjectsList.map((subject, index) => (
+              <MenuItem key={index} value={subject.subName}>
+                {subject.subName}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem value="Select Subject">Add Subjects For Attendance</MenuItem>
+          )}
+        </Select>
+      </FormControl>
+
       <Box
         display="flex"
         justifyContent="center"

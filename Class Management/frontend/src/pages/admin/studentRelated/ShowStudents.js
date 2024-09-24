@@ -80,15 +80,16 @@ const ShowStudents = () => {
         return {
             name: student.name,
             rollNum: student.rollNum,
-            dob: student.dob,
+            dob: new Date(student.dob).toLocaleDateString(),
             sclassName: student.sclassName.sclassName,
-            address:student.address,
-            phoneNumber:student.phoneNumber,
-            guardianName:student.guardianName,
-            guardianPhone:student.guardianPhone,
+            address: student.address,
+            phoneNumber: student.phoneNumber,
+            guardianName: student.guardianName,
+            guardianPhone: student.guardianPhone,
             id: student._id,
         };
-    })
+    });
+    
 
     // const StudentButtonHaver = ({ row }) => {
     //     const options = ['Take Attendance', 'Provide Marks'];
