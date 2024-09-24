@@ -204,24 +204,34 @@
 
 
 
+/*********************************this is a QR Scan code with Subject********************************************/
 
-// import { Box, CircularProgress, Typography } from '@mui/material';
-// import React, { useState } from 'react';
+
+
+// import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+// import React, { useEffect, useState } from 'react';
 // import { QrReader } from 'react-qr-reader';
-// import { useDispatch } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
 // import { updateStudentFields } from '../../../redux/studentRelated/studentHandle';
 
-// const AdminAttendance = () => {
+// const AdminAttendance = ({ studentID }) => {
 //   const dispatch = useDispatch();
+//   const { subjectsList } = useSelector((state) => state.sclass);
 //   const [scanResult, setScanResult] = useState(null);
 //   const [loading, setLoading] = useState(false);
 //   const [errorMessage, setErrorMessage] = useState('');
+//   const [subjectName, setSubjectName] = useState('');
+//   const [chosenSubName, setChosenSubName] = useState('');
+
+//   useEffect(() => {
+//     // Assuming the class or some identifier is available to fetch subjects
+//     dispatch(getSubjectList("classOrRelevantIdentifier", "ClassSubjects"));
+//   }, [dispatch]);
 
 //   const handleScan = (data) => {
 //     if (data) {
-//       setScanResult(data); // this will be the student ID
-//       const fields = { status: 'Present', date: new Date().toISOString().split('T')[0] };
-//       dispatch(updateStudentFields(data, fields, 'StudentAttendance'));
+//       setScanResult(data); // Capture the student ID from the QR code
 //       setErrorMessage('');
 //       setLoading(false);
 //     }
@@ -233,20 +243,66 @@
 //     console.error(err);
 //   };
 
+//   const handleAddAttendance = () => {
+//     if (scanResult && chosenSubName) {
+//       const fields = {
+//         status: 'Present',
+//         date: new Date().toISOString().split('T')[0],
+//         subName: chosenSubName, // Subject chosen manually
+//       };
+//       dispatch(updateStudentFields(scanResult, fields, 'StudentAttendance'));
+//       setErrorMessage('');
+//       setScanResult(null);
+//     } else {
+//       setErrorMessage('Please select a subject before scanning the QR code.');
+//     }
+//   };
+
+//   const handleSubjectChange = (event) => {
+//     const selectedSubject = subjectsList.find(
+//       (subject) => subject.subName === event.target.value
+//     );
+//     setSubjectName(selectedSubject.subName);
+//     setChosenSubName(selectedSubject._id);
+//   };
+
 //   return (
 //     <Box p={3} textAlign="center">
 //       <Typography variant="h4" gutterBottom>
-//         Scan QR Code for Attendance
+//         Select Subject and Scan QR Code for Attendance
 //       </Typography>
-//       <Box 
-//         display="flex" 
-//         justifyContent="center" 
-//         alignItems="center" 
+
+//       <FormControl fullWidth sx={{ mb: 3 }}>
+//         <InputLabel id="subject-select-label">Select Subject</InputLabel>
+//         <Select
+//           labelId="subject-select-label"
+//           id="subject-select"
+//           value={subjectName}
+//           label="Choose an option"
+//           onChange={handleSubjectChange}
+//           required
+//         >
+//           {subjectsList ? (
+//             subjectsList.map((subject, index) => (
+//               <MenuItem key={index} value={subject.subName}>
+//                 {subject.subName}
+//               </MenuItem>
+//             ))
+//           ) : (
+//             <MenuItem value="Select Subject">Add Subjects For Attendance</MenuItem>
+//           )}
+//         </Select>
+//       </FormControl>
+
+//       <Box
+//         display="flex"
+//         justifyContent="center"
+//         alignItems="center"
 //         flexDirection="column"
-//         border="2px dashed #3f51b5" 
-//         borderRadius="8px" 
-//         p={2} 
-//         mb={2} 
+//         border="2px dashed #3f51b5"
+//         borderRadius="8px"
+//         p={2}
+//         mb={2}
 //         width={{ xs: '90%', sm: '60%', md: '40%' }}
 //         mx="auto"
 //       >
@@ -254,7 +310,9 @@
 //         {loading && (
 //           <Box mb={2}>
 //             <CircularProgress color="primary" />
-//             <Typography variant="body1" color="textSecondary">Scanning...</Typography>
+//             <Typography variant="body1" color="textSecondary">
+//               Scanning...
+//             </Typography>
 //           </Box>
 //         )}
 
@@ -268,17 +326,27 @@
 //               handleError(error);
 //             }
 //           }}
-//           constraints={{ facingMode: 'environment' }} // Using environment camera for scanning
-//           videoStyle={{ width: '100%', height: 'auto' }} // Adjust to ensure video occupies full width
-//           containerStyle={{ width: '100%', paddingTop: '100%', position: 'relative' }} // Keeps a square scanning area
-//           videoContainerStyle={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} // Ensures full video render
+//           constraints={{ facingMode: 'environment' }} 
+//           videoStyle={{ width: '100%', height: 'auto' }} 
+//           containerStyle={{ width: '100%', paddingTop: '100%', position: 'relative' }} 
+//           videoContainerStyle={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
 //         />
 //       </Box>
 
 //       {scanResult && (
-//         <Typography variant="h6" color="green" gutterBottom>
-//           Attendance marked for student ID: {scanResult}
-//         </Typography>
+//         <>
+//           <Typography variant="h6" color="green" gutterBottom>
+//             Student ID: {scanResult}
+//           </Typography>
+//           <Button
+//             variant="contained"
+//             color="primary"
+//             onClick={handleAddAttendance}
+//             sx={{ mt: 2 }}
+//           >
+//             Add Attendance
+//           </Button>
+//         </>
 //       )}
 
 //       {errorMessage && (
@@ -296,20 +364,14 @@
 
 
 
-
-
-
-
-
-
-import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { QrReader } from 'react-qr-reader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
 import { updateStudentFields } from '../../../redux/studentRelated/studentHandle';
 
-const AdminAttendance = ({ studentID }) => {
+const AdminAttendance = () => {
   const dispatch = useDispatch();
   const { subjectsList } = useSelector((state) => state.sclass);
   const [scanResult, setScanResult] = useState(null);
@@ -317,15 +379,16 @@ const AdminAttendance = ({ studentID }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [subjectName, setSubjectName] = useState('');
   const [chosenSubName, setChosenSubName] = useState('');
+  const [date, setDate] = useState(''); // Date state for manual selection
 
   useEffect(() => {
-    // Assuming the class or some identifier is available to fetch subjects
+    // Fetch the subjects list based on class or identifier
     dispatch(getSubjectList("classOrRelevantIdentifier", "ClassSubjects"));
   }, [dispatch]);
 
   const handleScan = (data) => {
     if (data) {
-      setScanResult(data); // Capture the student ID from the QR code
+      setScanResult(data); // Capture student ID from the QR code
       setErrorMessage('');
       setLoading(false);
     }
@@ -338,17 +401,17 @@ const AdminAttendance = ({ studentID }) => {
   };
 
   const handleAddAttendance = () => {
-    if (scanResult && chosenSubName) {
+    if (scanResult && chosenSubName && date) {
       const fields = {
         status: 'Present',
-        date: new Date().toISOString().split('T')[0],
-        subName: chosenSubName, // Subject chosen manually
+        date, // Use the manually selected date
+        subName: chosenSubName, // Selected subject name
       };
       dispatch(updateStudentFields(scanResult, fields, 'StudentAttendance'));
       setErrorMessage('');
       setScanResult(null);
     } else {
-      setErrorMessage('Please select a subject before scanning the QR code.');
+      setErrorMessage('Please select a subject, date, and scan the QR code.');
     }
   };
 
@@ -363,7 +426,7 @@ const AdminAttendance = ({ studentID }) => {
   return (
     <Box p={3} textAlign="center">
       <Typography variant="h4" gutterBottom>
-        Select Subject and Scan QR Code for Attendance
+        Select Subject, Date, and Scan QR Code for Attendance
       </Typography>
 
       <FormControl fullWidth sx={{ mb: 3 }}>
@@ -388,6 +451,20 @@ const AdminAttendance = ({ studentID }) => {
         </Select>
       </FormControl>
 
+      {/* Date Picker for Manual Date Selection */}
+      <FormControl fullWidth sx={{ mb: 3 }}>
+        <TextField
+          label="Select Date"
+          type="date"
+          value={date}
+          onChange={(event) => setDate(event.target.value)} 
+          required
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </FormControl>
+
       <Box
         display="flex"
         justifyContent="center"
@@ -400,7 +477,7 @@ const AdminAttendance = ({ studentID }) => {
         width={{ xs: '90%', sm: '60%', md: '40%' }}
         mx="auto"
       >
-        {/* Add a scanning area with proper feedback */}
+        {/* QR Scanner */}
         {loading && (
           <Box mb={2}>
             <CircularProgress color="primary" />
@@ -410,7 +487,7 @@ const AdminAttendance = ({ studentID }) => {
           </Box>
         )}
 
-        {/* Camera Preview with fixed aspect ratio */}
+        {/* QR Reader Component */}
         <QrReader
           onResult={(result, error) => {
             if (!!result) {
@@ -420,9 +497,9 @@ const AdminAttendance = ({ studentID }) => {
               handleError(error);
             }
           }}
-          constraints={{ facingMode: 'environment' }} 
-          videoStyle={{ width: '100%', height: 'auto' }} 
-          containerStyle={{ width: '100%', paddingTop: '100%', position: 'relative' }} 
+          constraints={{ facingMode: 'environment' }}
+          videoStyle={{ width: '100%', height: 'auto' }}
+          containerStyle={{ width: '100%', paddingTop: '100%', position: 'relative' }}
           videoContainerStyle={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
         />
       </Box>

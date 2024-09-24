@@ -207,7 +207,6 @@ const AddStudent = ({ situation }) => {
         }
     };
 
-    // Updated fields object to include the new fields
     const fields = {
         name,
         rollNum,
@@ -372,3 +371,4 @@ const AddStudent = ({ situation }) => {
 };
 
 export default AddStudent;
+
