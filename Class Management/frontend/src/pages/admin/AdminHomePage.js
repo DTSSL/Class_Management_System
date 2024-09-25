@@ -2,9 +2,10 @@ import { Container, Grid, Paper } from '@mui/material';
 import SeeNotice from '../../components/SeeNotice';
 import Students from "../../assets/img1.gif";
 import Classes from "../../assets/img2.gif";
-import Teachers from "../../assets/img6.gif"; // We'll use this image for bottom-left corner too.
+import Teachers from "../../assets/img3.gif"; // We'll use this image for bottom-left corner too.
 import Fees from "../../assets/img4.gif";
 import BottomRightImage from "../../assets/img5.gif";
+import BottomlefttImage from "../../assets/img6.gif";
 import styled from 'styled-components';
 import CountUp from 'react-countup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -75,7 +76,7 @@ const AdminHomePage = () => {
 
             {/* Bottom Left Image */}
             <BottomLeftImageWrapper>
-                <BottomLeftImageStyled src={Teachers} alt="Bottom Left" />
+                <BottomLeftImageStyled src={BottomlefttImage} alt="Bottom Left" />
             </BottomLeftImageWrapper>
         </Container>
     );
