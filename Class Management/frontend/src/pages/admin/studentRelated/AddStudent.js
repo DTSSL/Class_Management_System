@@ -146,6 +146,8 @@
 
 
 import { CircularProgress } from '@mui/material';
+
+import { Box, Container, Grid, Paper, Slide, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -250,11 +252,21 @@ const AddStudent = ({ situation }) => {
 
     return (
         <>
+        <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Slide in={true} direction="up" timeout={600}>
+        <Paper elevation={10} sx={{ p: 4, borderRadius: 4 }}>
+          <Grid container spacing={3}>
+          <Grid item xs={12}>
+          <Box display="flex" flexDirection="column" gap={2}>
             <div className="register">
                 <form className="registerForm" onSubmit={submitHandler}>
-                    <span className="registerTitle">Add Student</span>
-                    
-                    
+                <Grid item xs={12}>
+              <Box display="flex" justifyContent="center">
+                <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
+                 Add Students
+                </Typography>
+              </Box>
+            </Grid>
 
                     {
                         situation === "Student" &&
@@ -366,6 +378,14 @@ const AddStudent = ({ situation }) => {
                 </form>
             </div>
             <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
+            
+            </Box>
+            </Grid>
+
+            </Grid>
+        </Paper>
+      </Slide>
+    </Container>
         </>
     );
 };
