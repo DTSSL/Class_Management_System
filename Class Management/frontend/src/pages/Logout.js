@@ -71,7 +71,7 @@
 // const LogoutButtonCancel = styled(LogoutButton)`
 //   background-color: rgb(99, 60, 99);
 // `;
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { authLogout } from '../redux/userRelated/userSlice';
@@ -79,7 +79,8 @@ import styled, { keyframes } from 'styled-components';
 
 const Logout = () => {
     const currentUser = useSelector(state => state.user.currentUser);
-
+    const [showWarning, setShowWarning] = useState(false);
+    
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -92,92 +93,128 @@ const Logout = () => {
         navigate(-1);
     };
 
+    const handleWarningConfirm = () => {
+        setShowWarning(false);
+        handleLogout();
+    };
+
+    const handleWarningCancel = () => {
+        setShowWarning(false);
+    };
+
     return (
-        <DarkContainer>
-            <Card>
+        <NeonBackground>
+            <NeonCard>
                 <h1>{currentUser ? currentUser.name : 'Guest'}</h1>
-                <LogoutMessage>Are you sure you want to log out?</LogoutMessage>
+                <LogoutMessage>
+                    {showWarning ? 'Are you sure you want to log out?' : 'Do you want to log out?'}
+                </LogoutMessage>
                 <ButtonContainer>
-                    <ActionButton onClick={handleLogout} primary>Log Out</ActionButton>
-                    <ActionButton onClick={handleCancel}>Cancel</ActionButton>
+                    {showWarning ? (
+                        <>
+                            <NeonButton onClick={handleWarningConfirm} primary>Yes, Log Out</NeonButton>
+                            <NeonButton onClick={handleWarningCancel}>Cancel</NeonButton>
+                        </>
+                    ) : (
+                        <>
+                            <NeonButton onClick={() => setShowWarning(true)} primary>Log Out</NeonButton>
+                            <NeonButton onClick={handleCancel}>Cancel</NeonButton>
+                        </>
+                    )}
                 </ButtonContainer>
-            </Card>
-        </DarkContainer>
+            </NeonCard>
+        </NeonBackground>
     );
 };
 
 export default Logout;
 
-// Smooth fade-in and slide-up animation
-const fadeInUp = keyframes`
+// Animated background gradient
+const gradientAnimation = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+// Entry animation for the card
+const cardEntry = keyframes`
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: rotateX(10deg) translateY(50px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: rotateX(0) translateY(0);
   }
 `;
 
-const DarkContainer = styled.div`
+const NeonBackground = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1a1a1d;  // Dark theme background color
-  color: #f0f0f0;
+  background: linear-gradient(45deg, #1f4037, #99f2c8, #645cfd, #ff00c8);
+  background-size: 300% 300%;
+  animation: ${gradientAnimation} 8s ease infinite;
 `;
 
-const Card = styled.div`
-  background-color: #2c2c34;
-  border-radius: 15px;
+const NeonCard = styled.div`
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
   max-width: 400px;
-  width: 100%;
-  animation: ${fadeInUp} 0.6s ease-out;
-  
+  color: #fff;
+  box-shadow: 0px 0px 20px rgba(255, 0, 255, 0.3), 0px 0px 30px rgba(100, 92, 253, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  animation: ${cardEntry} 1s ease forwards;
+  transform-style: preserve-3d;
+  backdrop-filter: blur(8px);
+
   h1 {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     color: #fff;
+    text-shadow: 0 0 10px #ff00c8, 0 0 20px #ff00c8;
   }
 `;
 
 const LogoutMessage = styled.p`
   font-size: 18px;
-  margin-bottom: 25px;
-  color: #d4d4d8;
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 0 8px rgba(255, 0, 255, 0.6), 0 0 15px rgba(100, 92, 253, 0.7);
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  gap: 15px;
+  justify-content: space-between;
+  gap: 20px;
 `;
 
-const ActionButton = styled.button`
+const NeonButton = styled.button`
   padding: 12px 30px;
   font-size: 16px;
   font-weight: 600;
   border-radius: 30px;
-  border: none;
+  border: 2px solid ${({ primary }) => (primary ? '#ff00c8' : '#645cfd')};
+  color: #fff;
+  background: none;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  background: ${({ primary }) => (primary ? '#f05454' : '#4CAF50')};
-  color: #fff;
-  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.1);
-  outline: none;
+  text-shadow: 0 0 5px #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2), 0 0 20px ${({ primary }) => (primary ? '#ff00c8' : '#645cfd')}, inset 0 0 10px rgba(255, 255, 255, 0.2);
 
   &:hover {
-    transform: scale(1.05);
-    background: ${({ primary }) => (primary ? '#ff6666' : '#66bb6a')};
+    box-shadow: 0 0 20px ${({ primary }) => (primary ? '#ff00c8' : '#645cfd')}, 0 0 30px ${({ primary }) => (primary ? '#ff00c8' : '#645cfd')};
+    transform: translateY(-3px);
   }
 
   &:active {
-    box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.8), inset 1px 1px 2px rgba(255, 255, 255, 0.2);
+    transform: translateY(0);
+    box-shadow: 0 0 10px ${({ primary }) => (primary ? '#ff00c8' : '#645cfd')}, 0 0 15px ${({ primary }) => (primary ? '#ff00c8' : '#645cfd')};
   }
 `;
+
+
+
+

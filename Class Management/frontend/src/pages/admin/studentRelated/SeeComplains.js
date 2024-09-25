@@ -1,70 +1,83 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Paper, Box, Checkbox
+  Paper,
+  Box,
+  Checkbox,
+  Typography,
+  CircularProgress,
+  Card,
+  CardContent,
 } from '@mui/material';
 import { getAllComplains } from '../../../redux/complainRelated/complainHandle';
 import TableTemplate from '../../../components/TableTemplate';
 
 const SeeComplains = () => {
-
-  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };  const dispatch = useDispatch();
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+  const dispatch = useDispatch();
   const { complainsList, loading, error, response } = useSelector((state) => state.complain);
-  const { currentUser } = useSelector(state => state.user)
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getAllComplains(currentUser._id, "Complain"));
   }, [currentUser._id, dispatch]);
 
   if (error) {
-    console.log(error);
+    console.error(error);
   }
 
   const complainColumns = [
     { id: 'user', label: 'User', minWidth: 170 },
-    { id: 'complaint', label: 'Complaint', minWidth: 100 },
+    { id: 'complaint', label: 'Complaint', minWidth: 200 },
     { id: 'date', label: 'Date', minWidth: 170 },
   ];
 
-  const complainRows = complainsList && complainsList.length > 0 && complainsList.map((complain) => {
+  const complainRows = complainsList?.map((complain) => {
     const date = new Date(complain.date);
-    const dateString = date.toString() !== "Invalid Date" ? date.toISOString().substring(0, 10) : "Invalid Date";
+    const dateString = !isNaN(date) ? date.toISOString().substring(0, 10) : "Invalid Date";
     return {
       user: complain.user.name,
       complaint: complain.complaint,
       date: dateString,
       id: complain._id,
     };
-  });
+  }) || [];
 
-  const ComplainButtonHaver = ({ row }) => {
-    return (
-      <>
-        <Checkbox {...label} />
-      </>
-    );
-  };
+  const ComplainButtonHaver = ({ row }) => (
+    <Checkbox {...label} />
+  );
 
   return (
-    <>
-      {loading ?
-        <div>Loading...</div>
-        :
-        <>
-          {response ?
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-              No Complains Right Now
-            </Box>
-            :
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-              {Array.isArray(complainsList) && complainsList.length > 0 &&
+    <Box sx={{ padding: 2 }}>
+      {loading ? (
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+          <CircularProgress />
+          <Typography variant="h6" sx={{ marginLeft: 2 }}>Loading Complaints...</Typography>
+        </Box>
+      ) : (
+        <Paper elevation={3} sx={{ padding: 3 }}>
+          {response ? (
+            <Card variant="outlined">
+              <CardContent>
+                <Typography variant="h6" align="center" color="textSecondary">
+                  No Complaints Right Now
+                </Typography>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              {complainRows.length > 0 ? (
                 <TableTemplate buttonHaver={ComplainButtonHaver} columns={complainColumns} rows={complainRows} />
-              }
-            </Paper>
-          }
-        </>
-      }
-    </>
+              ) : (
+                <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
+                  <Typography variant="h6" color="textSecondary">No Data Available</Typography>
+                </Box>
+              )}
+            </>
+          )}
+        </Paper>
+      )}
+    </Box>
   );
 };
 

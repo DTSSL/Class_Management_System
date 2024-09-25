@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Grid, Paper, Typography } from '@mui/material';
+import { Container, Grid, Card, CardContent, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { calculateOverallAttendancePercentage } from '../../components/attendanceCalculator';
 import CustomPieChart from '../../components/CustomPieChart';
 import { getUserDetails } from '../../redux/userRelated/userHandle';
+import { getSubjectList } from '../../redux/sclassRelated/sclassHandle';
+import CountUp from 'react-countup';
 import styled from 'styled-components';
 import SeeNotice from '../../components/SeeNotice';
-import CountUp from 'react-countup';
-import Subject from "../../assets/subjects.svg";
-import Assignment from "../../assets/assignment.svg";
-import { getSubjectList } from '../../redux/sclassRelated/sclassHandle';
+import Subject from "../../assets/subjects.gif";
+import Assignment from "../../assets/assignment.gif";
 import BottomRightImage from "../../assets/img5.gif";
-import Teachers from "../../assets/img6.gif"; // Reusing the Teachers image for the bottom-left corner
+import Teachers from "../../assets/img6.gif";
 
 const StudentHomePage = () => {
     const dispatch = useDispatch();
-
     const { userDetails, currentUser, loading, response } = useSelector((state) => state.user);
     const { subjectsList } = useSelector((state) => state.sclass);
-
     const [subjectAttendance, setSubjectAttendance] = useState([]);
-
     const classID = currentUser.sclassName._id;
 
     useEffect(() => {
         dispatch(getUserDetails(currentUser._id, "Student"));
         dispatch(getSubjectList(classID, "ClassSubjects"));
     }, [dispatch, currentUser._id, classID]);
-
-    const numberOfSubjects = subjectsList && subjectsList.length;
 
     useEffect(() => {
         if (userDetails) {
@@ -45,121 +40,140 @@ const StudentHomePage = () => {
     ];
 
     return (
-        <>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4, position: 'relative', minHeight: '100vh' }}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Subject} alt="Subjects" />
-                            <Title>
-                                Total Subjects
-                            </Title>
-                            <Data start={0} end={numberOfSubjects} duration={2.5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Assignment} alt="Assignments" />
-                            <Title>
-                                Total Assignments
-                            </Title>
-                            <Data start={0} end={15} duration={4} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={4} lg={3}>
-                        <ChartContainer>
-                            {response ? (
-                                <Typography variant="h6">No Attendance Found</Typography>
-                            ) : (
-                                <>
-                                    {loading ? (
-                                        <Typography variant="h6">Loading...</Typography>
-                                    ) : (
-                                        subjectAttendance && Array.isArray(subjectAttendance) && subjectAttendance.length > 0 ? (
-                                            <CustomPieChart data={chartData} />
-                                        ) : (
-                                            <Typography variant="h6">No Attendance Found</Typography>
-                                        )
-                                    )}
-                                </>
-                            )}
-                        </ChartContainer>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <SeeNotice />
-                        </Paper>
-                    </Grid>
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4, position: 'relative', minHeight: '100vh' }}>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={6} lg={4}>
+                    <StyledCard>
+                        <CardContent>
+                            <ImageWrapper>
+                                <img src={Subject} alt="Subjects" />
+                            </ImageWrapper>
+                            <Title>Total Subjects</Title>
+                            <CountUp start={0} end={subjectsList.length} duration={2.5} />
+                        </CardContent>
+                    </StyledCard>
                 </Grid>
+                <Grid item xs={12} md={6} lg={4}>
+                    <StyledCard>
+                        <CardContent>
+                            <ImageWrapper>
+                                <img src={Assignment} alt="Assignments" />
+                            </ImageWrapper>
+                            <Title>Total Assignments</Title>
+                            <CountUp start={0} end={15} duration={4} />
+                        </CardContent>
+                    </StyledCard>
+                </Grid>
+                <Grid item xs={12} md={12} lg={4}>
+                    <ChartContainer>
+                        {loading ? (
+                            <Typography variant="h6">Loading...</Typography>
+                        ) : response ? (
+                            <Typography variant="h6">No Attendance Found</Typography>
+                        ) : (
+                            subjectAttendance && subjectAttendance.length > 0 ? (
+                                <CustomPieChart data={chartData} />
+                            ) : (
+                                <Typography variant="h6">No Attendance Found</Typography>
+                            )
+                        )}
+                    </ChartContainer>
+                </Grid>
+                <Grid item xs={12}>
+                    <StyledPaper>
+                        <SeeNotice />
+                    </StyledPaper>
+                </Grid>
+            </Grid>
 
-                {/* Bottom Right Image */}
-                <BottomRightImageWrapper>
-                    <BottomRightImageStyled src={BottomRightImage} alt="Bottom Right" />
-                </BottomRightImageWrapper>
+            {/* Bottom Right Image */}
+            <BottomRightImageWrapper>
+                <BottomRightImageStyled src={BottomRightImage} alt="Bottom Right" />
+            </BottomRightImageWrapper>
 
-                {/* Bottom Left Image */}
-                <BottomLeftImageWrapper>
-                    <BottomLeftImageStyled src={Teachers} alt="Bottom Left" />
-                </BottomLeftImageWrapper>
-            </Container>
-        </>
+            {/* Bottom Left Image */}
+            <BottomLeftImageWrapper>
+                <BottomLeftImageStyled src={Teachers} alt="Bottom Left" />
+            </BottomLeftImageWrapper>
+        </Container>
     );
 };
 
 // Styled Components
+const StyledCard = styled(Card)`
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 16px;
+    transition: transform 0.3s, box-shadow 0.3s;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+`;
+
+const Title = styled(Typography)`
+    font-size: 1.5rem;
+    margin: 12px 0;
+    font-weight: bold;
+`;
+
+const ImageWrapper = styled.div`
+    margin-bottom: 12px;
+    img {
+        width: 50px;
+        height: 50px;
+    }
+`;
+
 const ChartContainer = styled.div`
-  padding: 2px;
-  display: flex;
-  flex-direction: column;
-  height: 240px;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    height: 240px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background-color: #f9f9f9;
 `;
 
-const StyledPaper = styled(Paper)`
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  height: 200px;
-  justify-content: space-between;
-  align-items: center;
-  text-align: center;
-`;
-
-const Title = styled.p`
-  font-size: 1.25rem;
-`;
-
-const Data = styled(CountUp)`
-  font-size: calc(1.3rem + .6vw);
-  color: green;
+const StyledPaper = styled.div`
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
 `;
 
 // Bottom-Right Image Styling
 const BottomRightImageWrapper = styled.div`
-  position: fixed;
-  bottom: -10px;
-  right: -120px;
-  z-index: 1;
+    position: fixed;
+    bottom: -10px;
+    right: -120px;
+    z-index: 1;
 `;
 
 const BottomRightImageStyled = styled.img`
-  width: 460px;
-  height: auto;
+    width: 460px;
+    height: auto;
 `;
 
 // Bottom-Left Image Styling
 const BottomLeftImageWrapper = styled.div`
-  position: fixed;
-  bottom: -10px;
-  left: -60px;
-  z-index: 1;
+    position: fixed;
+    bottom: -10px;
+    left: -60px;
+    z-index: 1;
 `;
 
 const BottomLeftImageStyled = styled.img`
-  width: 460px;
-  height: auto;
+    width: 460px;
+    height: auto;
 `;
 
 export default StudentHomePage;

@@ -1,142 +1,152 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSubjectList } from '../../redux/sclassRelated/sclassHandle';
-import { BottomNavigation, BottomNavigationAction, Container, Paper, Table, TableBody, TableHead, Typography } from '@mui/material';
 import { getUserDetails } from '../../redux/userRelated/userHandle';
-import CustomBarChart from '../../components/CustomBarChart'
-
-import InsertChartIcon from '@mui/icons-material/InsertChart';
-import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
-import { StyledTableCell, StyledTableRow } from '../../components/styles';
+import { AppBar, Tabs, Tab, Container, Box, Typography, CircularProgress, Grid, Card, CardContent, Fade, Zoom } from '@mui/material';
+import CustomBarChart from '../../components/CustomBarChart';
 
 const StudentSubjects = () => {
-
     const dispatch = useDispatch();
     const { subjectsList, sclassDetails } = useSelector((state) => state.sclass);
-    const { userDetails, currentUser, loading, response, error } = useSelector((state) => state.user);
+    const { userDetails, currentUser, loading } = useSelector((state) => state.user);
+
+    const [subjectMarks, setSubjectMarks] = useState([]);
+    const [selectedTab, setSelectedTab] = useState(0);
 
     useEffect(() => {
         dispatch(getUserDetails(currentUser._id, "Student"));
-    }, [dispatch, currentUser._id])
-
-    if (response) { console.log(response) }
-    else if (error) { console.log(error) }
-
-    const [subjectMarks, setSubjectMarks] = useState([]);
-    const [selectedSection, setSelectedSection] = useState('table');
+    }, [dispatch, currentUser._id]);
 
     useEffect(() => {
         if (userDetails) {
             setSubjectMarks(userDetails.examResult || []);
         }
-    }, [userDetails])
+    }, [userDetails]);
 
     useEffect(() => {
-        if (subjectMarks === []) {
+        if (subjectMarks.length === 0) {
             dispatch(getSubjectList(currentUser.sclassName._id, "ClassSubjects"));
         }
     }, [subjectMarks, dispatch, currentUser.sclassName._id]);
 
-    const handleSectionChange = (event, newSection) => {
-        setSelectedSection(newSection);
-    };
-
-    const renderTableSection = () => {
-        return (
-            <>
-                <Typography variant="h4" align="center" gutterBottom>
-                    Subject Marks
-                </Typography>
-                <Table>
-                    <TableHead>
-                        <StyledTableRow>
-                            <StyledTableCell>Subject</StyledTableCell>
-                            <StyledTableCell>Marks</StyledTableCell>
-                        </StyledTableRow>
-                    </TableHead>
-                    <TableBody>
-                        {subjectMarks.map((result, index) => {
-                            if (!result.subName || !result.marksObtained) {
-                                return null;
-                            }
-                            return (
-                                <StyledTableRow key={index}>
-                                    <StyledTableCell>{result.subName.subName}</StyledTableCell>
-                                    <StyledTableCell>{result.marksObtained}</StyledTableCell>
-                                </StyledTableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </>
-        );
-    };
-
-    const renderChartSection = () => {
-        return <CustomBarChart chartData={subjectMarks} dataKey="marksObtained" />;
-    };
-
-    const renderClassDetailsSection = () => {
-        return (
-            <Container>
+    const renderClassDetailsSection = () => (
+        <Fade in timeout={1000}>
+            <Box sx={{ padding: 2 }}>
                 <Typography variant="h4" align="center" gutterBottom>
                     Class Details
                 </Typography>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" align="center" gutterBottom>
                     You are currently in Class {sclassDetails && sclassDetails.sclassName}
                 </Typography>
-                <Typography variant="h6" gutterBottom>
-                    And these are the subjects:
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 2 }}>
+                    <Typography variant="h6" gutterBottom>
+                        Subjects Enrolled:
+                    </Typography>
+                    <Grid container spacing={3}>
+                        {subjectsList.length > 0 ? (
+                            subjectsList.map((subject, index) => (
+                                <Grid item xs={12} sm={6} md={4} key={index}>
+                                    <Zoom in timeout={1000}>
+                                        <Card sx={{ backgroundColor: '#e3f2fd', borderRadius: '12px', boxShadow: 3 }}>
+                                            <CardContent>
+                                                <Typography variant="subtitle1" gutterBottom>
+                                                    {subject.subName} ({subject.subCode})
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    {/* Additional details can be added here */}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Zoom>
+                                </Grid>
+                            ))
+                        ) : (
+                            <Typography>No subjects available.</Typography>
+                        )}
+                    </Grid>
+                </Box>
+            </Box>
+        </Fade>
+    );
+
+    const renderMarksSection = () => (
+        <Fade in timeout={1000}>
+            <Grid container spacing={3}>
+                {subjectMarks.length > 0 ? (
+                    subjectMarks.map((result, index) => {
+                        if (!result.subName || !result.marksObtained) {
+                            return null;
+                        }
+                        return (
+                            <Grid item xs={12} sm={6} md={4} key={index}>
+                                <Zoom in timeout={1000}>
+                                    <Card sx={{ backgroundColor: '#e3f2fd', borderRadius: '12px', boxShadow: 3 }}>
+                                        <CardContent>
+                                            <Typography variant="h6" gutterBottom>
+                                                {result.subName.subName}
+                                            </Typography>
+                                            <Typography variant="body1">Marks: {result.marksObtained}</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Zoom>
+                            </Grid>
+                        );
+                    })
+                ) : (
+                    <Typography>No marks available.</Typography>
+                )}
+            </Grid>
+        </Fade>
+    );
+
+    const renderChartSection = () => (
+        <Fade in timeout={1000}>
+            <Box sx={{ padding: 2 }}>
+                <Typography variant="h4" align="center" gutterBottom>
+                    Marks Chart
                 </Typography>
-                {subjectsList &&
-                    subjectsList.map((subject, index) => (
-                        <div key={index}>
-                            <Typography variant="subtitle1">
-                                {subject.subName} ({subject.subCode})
-                            </Typography>
-                        </div>
-                    ))}
-            </Container>
-        );
+                <CustomBarChart chartData={subjectMarks} dataKey="marksObtained" />
+            </Box>
+        </Fade>
+    );
+
+    const handleTabChange = (event, newValue) => {
+        setSelectedTab(newValue);
+    };
+
+    const renderContent = () => {
+        switch (selectedTab) {
+            case 0:
+                return renderClassDetailsSection();
+            case 1:
+                return renderMarksSection();
+            case 2:
+                return renderChartSection();
+            default:
+                return null;
+        }
     };
 
     return (
-        <>
-            {loading ? (
-                <div>Loading...</div>
-            ) : (
-                <div>
-                    {subjectMarks && Array.isArray(subjectMarks) && subjectMarks.length > 0
-                        ?
-                        (<>
-                            {selectedSection === 'table' && renderTableSection()}
-                            {selectedSection === 'chart' && renderChartSection()}
+        <Container>
+            <AppBar position="static">
+                <Tabs value={selectedTab} onChange={handleTabChange} textColor="inherit" indicatorColor="secondary">
+                    <Tab label="Class Details" />
+                    <Tab label="Subject Marks" />
+                    <Tab label="Marks Chart" />
+                </Tabs>
+            </AppBar>
 
-                            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-                                <BottomNavigation value={selectedSection} onChange={handleSectionChange} showLabels>
-                                    <BottomNavigationAction
-                                        label="Table"
-                                        value="table"
-                                        icon={selectedSection === 'table' ? <TableChartIcon /> : <TableChartOutlinedIcon />}
-                                    />
-                                    <BottomNavigationAction
-                                        label="Chart"
-                                        value="chart"
-                                        icon={selectedSection === 'chart' ? <InsertChartIcon /> : <InsertChartOutlinedIcon />}
-                                    />
-                                </BottomNavigation>
-                            </Paper>
-                        </>)
-                        :
-                        (<>
-                            {renderClassDetailsSection()}
-                        </>)
-                    }
-                </div>
-            )}
-        </>
+            <Box sx={{ padding: 2 }}>
+                {loading ? (
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                        <CircularProgress />
+                    </div>
+                ) : (
+                    renderContent()
+                )}
+            </Box>
+        </Container>
     );
 };
 
