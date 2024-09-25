@@ -1,9 +1,9 @@
 import { Container, Grid, Paper } from '@mui/material';
 import SeeNotice from '../../components/SeeNotice';
-import Students from "../../assets/img1.png";
-import Classes from "../../assets/img2.png";
+import Students from "../../assets/img1.gif";
+import Classes from "../../assets/img2.gif";
 import Teachers from "../../assets/img6.gif"; // We'll use this image for bottom-left corner too.
-import Fees from "../../assets/img4.png";
+import Fees from "../../assets/img4.gif";
 import BottomRightImage from "../../assets/img5.gif";
 import styled from 'styled-components';
 import CountUp from 'react-countup';
