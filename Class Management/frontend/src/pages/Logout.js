@@ -93,79 +93,91 @@ const Logout = () => {
     };
 
     return (
-        <LogoutContainer>
-            <h1>{currentUser.name}</h1>
-            <LogoutMessage>Are you sure you want to log out?</LogoutMessage>
-            <ButtonContainer>
-                <LogoutButton onClick={handleLogout} primary>Log Out</LogoutButton>
-                <LogoutButton onClick={handleCancel}>Cancel</LogoutButton>
-            </ButtonContainer>
-        </LogoutContainer>
+        <DarkContainer>
+            <Card>
+                <h1>{currentUser ? currentUser.name : 'Guest'}</h1>
+                <LogoutMessage>Are you sure you want to log out?</LogoutMessage>
+                <ButtonContainer>
+                    <ActionButton onClick={handleLogout} primary>Log Out</ActionButton>
+                    <ActionButton onClick={handleCancel}>Cancel</ActionButton>
+                </ButtonContainer>
+            </Card>
+        </DarkContainer>
     );
 };
 
 export default Logout;
 
-// Pop-up animation
-const popUpAnimation = keyframes`
+// Smooth fade-in and slide-up animation
+const fadeInUp = keyframes`
   from {
     opacity: 0;
-    transform: scale(0.8);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
   }
 `;
 
-const LogoutContainer = styled.div`
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 20px;
+const DarkContainer = styled.div`
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-  background-color: #f5f5f5;
-  color: black;
+  background-color: #1a1a1d;  // Dark theme background color
+  color: #f0f0f0;
+`;
+
+const Card = styled.div`
+  background-color: #2c2c34;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   max-width: 400px;
-  margin: 20px auto;
-  animation: ${popUpAnimation} 0.5s ease-out;
+  width: 100%;
+  animation: ${fadeInUp} 0.6s ease-out;
+  
+  h1 {
+    margin-bottom: 15px;
+    color: #fff;
+  }
 `;
 
 const LogoutMessage = styled.p`
-  margin-bottom: 20px;
-  font-size: 16px;
-  text-align: center;
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: #d4d4d8;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 15px;
 `;
 
-const LogoutButton = styled.button`
-  padding: 10px 20px;
-  border-radius: 5px;
+const ActionButton = styled.button`
+  padding: 12px 30px;
   font-size: 16px;
-  color: #fff;
-  cursor: pointer;
+  font-weight: 600;
+  border-radius: 30px;
   border: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
-
-  ${({ primary }) => primary && `
-    background-color: #ea0606;
-  `}
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  background: ${({ primary }) => (primary ? '#f05454' : '#4CAF50')};
+  color: #fff;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.1);
+  outline: none;
 
   &:hover {
-    color: #fff;
-    background-color: #333;
+    transform: scale(1.05);
+    background: ${({ primary }) => (primary ? '#ff6666' : '#66bb6a')};
   }
-  
-  ${({ primary }) => primary ? `
-    background-color: #ea0606;
-  ` : `
-    background-color: #6c757d;
-  `}
+
+  &:active {
+    box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.8), inset 1px 1px 2px rgba(255, 255, 255, 0.2);
+  }
 `;
