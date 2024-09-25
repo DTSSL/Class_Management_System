@@ -1,21 +1,21 @@
-import { useState } from 'react';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
-    CssBaseline,
     Box,
-    Toolbar,
-    List,
-    Typography,
+    CssBaseline,
     Divider,
     IconButton,
+    List,
+    Toolbar,
+    Typography,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppBar, Drawer } from '../../components/styles';
 import Logout from '../Logout';
-import SideBar from './SideBar';
-import AdminProfile from './AdminProfile';
 import AdminHomePage from './AdminHomePage';
+import AdminProfile from './AdminProfile';
+import SideBar from './SideBar';
 
 import AddStudent from './studentRelated/AddStudent';
 import SeeComplains from './studentRelated/SeeComplains';
@@ -37,10 +37,10 @@ import ChooseSubject from './teacherRelated/ChooseSubject';
 import ShowTeachers from './teacherRelated/ShowTeachers';
 import TeacherDetails from './teacherRelated/TeacherDetails';
 
+import AccountMenu from '../../components/AccountMenu';
 import AddClass from './classRelated/AddClass';
 import ClassDetails from './classRelated/ClassDetails';
 import ShowClasses from './classRelated/ShowClasses';
-import AccountMenu from '../../components/AccountMenu';
 
 const AdminDashboard = () => {
     const [open, setOpen] = useState(false);
