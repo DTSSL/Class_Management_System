@@ -218,7 +218,7 @@ const ShowStudents = () => {
         };
     
         const handleMenuItemClick = (event, index) => {
-            setSelectedIndex(index);
+            setSelectedIndex(index); 
             setOpen(false);
         };
     

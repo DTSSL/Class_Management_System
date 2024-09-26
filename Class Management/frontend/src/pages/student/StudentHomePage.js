@@ -1,17 +1,17 @@
+import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Container, Grid, Card, CardContent, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { calculateOverallAttendancePercentage } from '../../components/attendanceCalculator';
-import CustomPieChart from '../../components/CustomPieChart';
-import { getUserDetails } from '../../redux/userRelated/userHandle';
-import { getSubjectList } from '../../redux/sclassRelated/sclassHandle';
 import CountUp from 'react-countup';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import SeeNotice from '../../components/SeeNotice';
-import Subject from "../../assets/subjects.gif";
 import Assignment from "../../assets/assignment.gif";
 import BottomRightImage from "../../assets/img5.gif";
 import Teachers from "../../assets/img6.gif";
+import Subject from "../../assets/subjects.gif";
+import { calculateOverallAttendancePercentage } from '../../components/attendanceCalculator';
+import CustomPieChart from '../../components/CustomPieChart';
+import SeeNotice from '../../components/SeeNotice';
+import { getSubjectList } from '../../redux/sclassRelated/sclassHandle';
+import { getUserDetails } from '../../redux/userRelated/userHandle';
 
 const StudentHomePage = () => {
     const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const StudentHomePage = () => {
                                 <img src={Subject} alt="Subjects" />
                             </ImageWrapper>
                             <Title>Total Subjects</Title>
-                            <CountUp start={0} end={subjectsList.length} duration={2.5} />
+                            <Data start={0} end={subjectsList.length} duration={2.5} />
                         </CardContent>
                     </StyledCard>
                 </Grid>
@@ -60,7 +60,7 @@ const StudentHomePage = () => {
                                 <img src={Assignment} alt="Assignments" />
                             </ImageWrapper>
                             <Title>Total Assignments</Title>
-                            <CountUp start={0} end={15} duration={4} />
+                            <Data start={0} end={15} duration={4} />
                         </CardContent>
                     </StyledCard>
                 </Grid>
@@ -174,6 +174,11 @@ const BottomLeftImageWrapper = styled.div`
 const BottomLeftImageStyled = styled.img`
     width: 460px;
     height: auto;
+`;
+const Data = styled(CountUp)`
+  font-size: calc(1.5rem + .8vw); // Responsive font size
+  color: #4caf50; // Material Green color
+  font-weight: bold;
 `;
 
 export default StudentHomePage;
