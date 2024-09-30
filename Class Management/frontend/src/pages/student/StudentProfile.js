@@ -247,11 +247,10 @@
 
 
 
-
-
 import EditIcon from '@mui/icons-material/Edit';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import SaveIcon from '@mui/icons-material/Save';
+import DownloadIcon from '@mui/icons-material/Download';
 import {
   Avatar,
   Box,
@@ -263,12 +262,12 @@ import {
   Paper,
   Slide,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import axios from 'axios'; // Using axios for API calls
 import { QRCodeCanvas } from 'qrcode.react';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // Styled components for a modern look
@@ -339,6 +338,7 @@ const StudentProfile = () => {
   });
   const [profilePic, setProfilePic] = useState(null);
   const [previewPic, setPreviewPic] = useState(currentUser.profilePicture || ''); // Assuming currentUser has a profilePicture field
+  const qrRef = useRef(null); // Ref for the QR code
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -397,6 +397,19 @@ const StudentProfile = () => {
     }
   };
 
+  // Download QR Code as PNG
+  const downloadQRCode = () => {
+    const qrCanvas = qrRef.current.querySelector('canvas'); // Get the canvas element
+    const pngUrl = qrCanvas.toDataURL('image/png'); // Convert canvas to PNG data URL
+
+    const downloadLink = document.createElement('a'); // Create a temporary anchor element
+    downloadLink.href = pngUrl;
+    downloadLink.download = `${currentUser.name}_QRCode.png`; // Set the filename for download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink); // Clean up after download
+  };
+
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Slide in={true} direction="up" timeout={600}>
@@ -440,8 +453,22 @@ const StudentProfile = () => {
             {/* QR Generator */}
             <Grid item xs={12} textAlign="center">
               <Fade in={true} timeout={1200}>
-                <QRCodeCanvas value={currentUser._id} size={140} />
+                <div ref={qrRef}>
+                  <QRCodeCanvas value={currentUser._id} size={140} />
+                </div>
               </Fade>
+            </Grid>
+
+            {/* Download QR Code Button */}
+            <Grid item xs={12} textAlign="center">
+              <Button
+                variant="contained"
+                startIcon={<DownloadIcon />}
+                onClick={downloadQRCode}
+                sx={{ mt: 2 }}
+              >
+                Download QR Code
+              </Button>
             </Grid>
 
             {/* Profile Details */}
@@ -480,34 +507,20 @@ const StudentProfile = () => {
                       onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
                     />
                     <InputField
-                      label="Emergency Number"
+                      label="Emergency Contact"
                       variant="outlined"
                       value={userData.emergencyContact}
-                      onChange={(e) =>
-                        setUserData({ ...userData, emergencyContact: e.target.value })
-                      }
+                      onChange={(e) => setUserData({ ...userData, emergencyContact: e.target.value })}
                     />
                   </>
                 ) : (
                   <>
-                    <Typography variant="subtitle1">
-                      <strong>Student Roll No:</strong> {userData.rollNum}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      <strong>Class:</strong> {userData.sclassName}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      <strong>School:</strong> {userData.schoolName}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      <strong>Home Address:</strong> {userData.address}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      <strong>Phone Number:</strong> {userData.phone}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      <strong>Emergency Number:</strong> {userData.emergencyContact}
-                    </Typography>
+                    <Typography variant="body1">Roll No: {userData.rollNum}</Typography>
+                    <Typography variant="body1">Class: {userData.sclassName}</Typography>
+                    <Typography variant="body1">School: {userData.schoolName}</Typography>
+                    <Typography variant="body1">Address: {userData.address}</Typography>
+                    <Typography variant="body1">Phone: {userData.phone}</Typography>
+                    <Typography variant="body1">Emergency Contact: {userData.emergencyContact}</Typography>
                   </>
                 )}
               </Box>
@@ -515,13 +528,9 @@ const StudentProfile = () => {
           </Grid>
 
           {editMode && (
-            <Box textAlign="center">
-              <Fade in={true}>
-                <SaveButton variant="contained" onClick={saveChanges}>
-                  Save Changes
-                </SaveButton>
-              </Fade>
-            </Box>
+            <SaveButton variant="contained" onClick={saveChanges}>
+              Save Changes
+            </SaveButton>
           )}
         </ProfilePaper>
       </Slide>
@@ -530,3 +539,5 @@ const StudentProfile = () => {
 };
 
 export default StudentProfile;
+
+
