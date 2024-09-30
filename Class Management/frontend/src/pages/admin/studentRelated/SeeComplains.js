@@ -8,6 +8,7 @@ import {
   CircularProgress,
   Card,
   CardContent,
+  Alert,
 } from '@mui/material';
 import { getAllComplains } from '../../../redux/complainRelated/complainHandle';
 import TableTemplate from '../../../components/TableTemplate';
@@ -19,7 +20,9 @@ const SeeComplains = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(getAllComplains(currentUser._id, "Complain"));
+    if (currentUser && currentUser._id) {
+      dispatch(getAllComplains(currentUser._id, "Complain"));
+    }
   }, [currentUser._id, dispatch]);
 
   if (error) {
@@ -35,8 +38,9 @@ const SeeComplains = () => {
   const complainRows = complainsList?.map((complain) => {
     const date = new Date(complain.date);
     const dateString = !isNaN(date) ? date.toISOString().substring(0, 10) : "Invalid Date";
+
     return {
-      user: complain.user.name,
+      user: complain.user?.name || 'Unknown User', // Safe access to avoid null reference
       complaint: complain.complaint,
       date: dateString,
       id: complain._id,
@@ -54,6 +58,8 @@ const SeeComplains = () => {
           <CircularProgress />
           <Typography variant="h6" sx={{ marginLeft: 2 }}>Loading Complaints...</Typography>
         </Box>
+      ) : error ? (
+        <Alert severity="error">An error occurred while loading complaints: {error.message}</Alert>
       ) : (
         <Paper elevation={3} sx={{ padding: 3 }}>
           {response ? (

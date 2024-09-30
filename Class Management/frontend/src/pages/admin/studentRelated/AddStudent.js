@@ -825,11 +825,13 @@
 // ________________________________________________________________________________________________________________------------------->
 
 
-
-import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import {
+    Grid, TextField, Button, FormControl, InputLabel, Select, MenuItem,
+    CircularProgress, Typography, Card, CardContent, CardActions, Paper, Box
+} from '@mui/material';
 import Popup from '../../../components/Popup';
 import { getAllSclasses } from '../../../redux/sclassRelated/sclassHandle';
 import { registerUser } from '../../../redux/userRelated/userHandle';
@@ -849,7 +851,7 @@ const AddStudent = ({ situation }) => {
     const [password, setPassword] = useState('');
     const [className, setClassName] = useState('');
     const [sclassName, setSclassName] = useState('');
-    
+
     // New fields for student and guardian
     const [address, setAddress] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -930,124 +932,160 @@ const AddStudent = ({ situation }) => {
     }, [status, navigate, error, response, dispatch]);
 
     return (
-        <>
-            <div className="register">
-                <form className="registerForm" onSubmit={submitHandler}>
-                    <span className="registerTitle">Add Student</span>
-                    
-                    
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#f4f6f8' }}>
+            <Card sx={{ width: '100%', maxWidth: 600, boxShadow: 3, borderRadius: 4 }}>
+                <CardContent>
+                    <Typography variant="h5" align="center" gutterBottom>
+                        Add New Student
+                    </Typography>
 
-                    {
-                        situation === "Student" &&
-                        <>
-                            <label>Class</label>
-                            <select
-                                className="registerInput"
-                                value={className}
-                                onChange={changeHandler} 
-                                required
-                            >
-                                <option value='Select Class'>Select Class</option>
-                                {sclassesList.map((classItem, index) => (
-                                    <option key={index} value={classItem.sclassName}>
-                                        {classItem.sclassName}
-                                    </option>
-                                ))}
-                            </select>
-                        </>
-                    }
+                    <form onSubmit={submitHandler}>
+                        <Grid container spacing={2}>
 
-                    <label>Roll Number</label>
-                    <input 
-                        className="registerInput" 
-                        type="number" 
-                        placeholder="Enter student's Roll Number..."
-                        value={rollNum}
-                        onChange={(event) => setRollNum(event.target.value)}
-                        required 
-                    />
-                    <label>Name</label>
-                    <input 
-                        className="registerInput" 
-                        type="text" 
-                        placeholder="Enter student's name..."
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
-                        autoComplete="name" 
-                        required 
-                    />
-                    <label>Birthday</label>
-                    <input 
-                        className="registerInput" 
-                        type="date" 
-                        placeholder="Enter student's address..."
-                        value={dob}
-                        onChange={(event) => setDob(event.target.value)}
-                        required 
-                    />
+                            {/* Class selection */}
+                            {situation === "Student" && (
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth required>
+                                        <InputLabel>Class</InputLabel>
+                                        <Select
+                                            value={className}
+                                            onChange={changeHandler}
+                                            label="Class"
+                                        >
+                                            <MenuItem value="Select Class">Select Class</MenuItem>
+                                            {sclassesList.map((classItem, index) => (
+                                                <MenuItem key={index} value={classItem.sclassName}>
+                                                    {classItem.sclassName}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            )}
 
-                    <label>Address</label>
-                    <input 
-                        className="registerInput" 
-                        type="text" 
-                        placeholder="Enter student's address..."
-                        value={address}
-                        onChange={(event) => setAddress(event.target.value)}
-                        required 
-                    />
+                            {/* Roll Number */}
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    required
+                                    label="Roll Number"
+                                    type="number"
+                                    value={rollNum}
+                                    onChange={(e) => setRollNum(e.target.value)}
+                                    placeholder="Enter student's Roll Number"
+                                />
+                            </Grid>
 
-                    <label>Phone Number</label>
-                    <input 
-                        className="registerInput" 
-                        type="tel" 
-                        placeholder="Enter student's phone number..."
-                        value={phoneNumber}
-                        onChange={(event) => setPhoneNumber(event.target.value)}
-                        required 
-                    />
+                            {/* Name */}
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    required
+                                    label="Name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Enter student's name"
+                                />
+                            </Grid>
 
-                    <label>Guardian's Name</label>
-                    <input 
-                        className="registerInput" 
-                        type="text" 
-                        placeholder="Enter guardian's name..."
-                        value={guardianName}
-                        onChange={(event) => setGuardianName(event.target.value)}
-                        required 
-                    />
+                            {/* Date of Birth */}
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    required
+                                    label="Birthday"
+                                    type="date"
+                                    value={dob}
+                                    onChange={(e) => setDob(e.target.value)}
+                                    InputLabelProps={{ shrink: true }}
+                                />
+                            </Grid>
 
-                    <label>Guardian's Phone Number</label>
-                    <input 
-                        className="registerInput" 
-                        type="tel" 
-                        placeholder="Enter guardian's phone number..."
-                        value={guardianPhone}
-                        onChange={(event) => setGuardianPhone(event.target.value)}
-                        required 
-                    />
+                            {/* Address */}
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    required
+                                    label="Address"
+                                    value={address}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                    placeholder="Enter student's address"
+                                />
+                            </Grid>
 
-                    <label>Password</label>
-                    <input 
-                        className="registerInput" 
-                        type="password" 
-                        placeholder="Enter student's password..."
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        autoComplete="new-password" 
-                        required 
-                    />
+                            {/* Phone Number */}
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    required
+                                    label="Phone Number"
+                                    type="tel"
+                                    value={phoneNumber}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    placeholder="Enter student's phone number"
+                                />
+                            </Grid>
 
-                    <button className="registerButton" type="submit" disabled={loader}>
-                        {loader ? (
-                            <CircularProgress size={24} color="inherit" />
-                        ) : (
-                            'Add'
-                        )}
-                    </button>
-                </form>
-            </div>
+                            {/* Guardian Name */}
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    required
+                                    label="Guardian's Name"
+                                    value={guardianName}
+                                    onChange={(e) => setGuardianName(e.target.value)}
+                                    placeholder="Enter guardian's name"
+                                />
+                            </Grid>
+
+                            {/* Guardian's Phone Number */}
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    required
+                                    label="Guardian's Phone Number"
+                                    type="tel"
+                                    value={guardianPhone}
+                                    onChange={(e) => setGuardianPhone(e.target.value)}
+                                    placeholder="Enter guardian's phone number"
+                                />
+                            </Grid>
+
+                            {/* Password */}
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    required
+                                    label="Password"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="Enter student's password"
+                                    autoComplete="new-password"
+                                />
+                            </Grid>
+
+                        </Grid>
+                    </form>
+                </CardContent>
+                <CardActions sx={{ padding: 2, display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disabled={loader}
+                        onClick={submitHandler}
+                        sx={{ height: 48 }}
+                    >
+                        {loader ? <CircularProgress size={24} color="inherit" /> : 'Add Student'}
+                    </Button>
+                </CardActions>
+            </Card>
+
+            {/* Popup */}
             <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-        </>
+        </Box>
     );
 };
 
