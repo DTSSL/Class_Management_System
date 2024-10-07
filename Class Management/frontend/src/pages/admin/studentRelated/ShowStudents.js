@@ -362,12 +362,12 @@ const ShowStudents = () => {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', marginBottom: '16px' }}>
                 <Box sx={{ width: '300px' }}>
                     <TextField
-                        label="Search"
+                        label="Search..."
                         variant="outlined"
                         fullWidth
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Search..."
+                        placeholder="Search roll no, name , etc..."
                         size="small" 
                     />
                 </Box>
