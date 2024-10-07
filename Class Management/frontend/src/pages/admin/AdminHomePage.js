@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Students from "../../assets/img1.gif";
 import Classes from "../../assets/img2.gif";
-import Teachers from "../../assets/img3.gif"; // We'll use this image for bottom-left corner too.
+import Teachers from "../../assets/img3.gif";
 import Fees from "../../assets/img4.gif";
 import BottomRightImage from "../../assets/img5.gif";
 import BottomlefttImage from "../../assets/img6.gif";
