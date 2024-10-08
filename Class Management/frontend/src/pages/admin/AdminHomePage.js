@@ -121,7 +121,7 @@ const AnimatedNoticePaper = styled(Paper)`
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 1s ease-in-out; 0
 
   @keyframes fadeIn {
     from {
