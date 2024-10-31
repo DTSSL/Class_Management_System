@@ -24,7 +24,7 @@ const StudentHomePage = () => {
         dispatch(getUserDetails(currentUser._id, "Student"));
         dispatch(getSubjectList(classID, "ClassSubjects"));
     }, [dispatch, currentUser._id, classID]);
-
+ 
     useEffect(() => {
         if (userDetails) {
             setSubjectAttendance(userDetails.attendance || []);
